@@ -32,6 +32,8 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class LoginWindow extends JFrame implements ActionListener{
 
@@ -101,6 +103,7 @@ public class LoginWindow extends JFrame implements ActionListener{
 		contentPane.setLayout(null);
 		
 		LoginPanel = new JPanel();
+		LoginPanel.setBorder(new EmptyBorder(1, 1, 1, 0));
 		LoginPanel.setBackground(UIManager.getColor("Button.background"));
 		LoginPanel.setBounds(851, 48, 508, 639);
 		contentPane.add(LoginPanel);
@@ -109,6 +112,14 @@ public class LoginWindow extends JFrame implements ActionListener{
 		txtPassword = new JPasswordField();
 		txtPassword.setBackground(UIManager.getColor("Button.background"));
 		txtPassword.setBounds(172, 380, 309, 46);
+		txtPassword.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					confirmLogin();
+				}
+			}
+		});
 		LoginPanel.add(txtPassword);
 		txtPassword.setFont(new Font("MS UI Gothic", Font.BOLD, 25));
 		txtPassword.setColumns(10);
@@ -117,6 +128,14 @@ public class LoginWindow extends JFrame implements ActionListener{
 		txtUsername = new JTextField();
 		txtUsername.setBackground(UIManager.getColor("Button.background"));
 		txtUsername.setBounds(172, 261, 309, 46);
+		txtUsername.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					confirmLogin();
+				}
+			}
+		});
 		LoginPanel.add(txtUsername);
 		txtUsername.setFont(new Font("MS UI Gothic", Font.BOLD, 25));
 		txtUsername.setBorder(new MatteBorder(0, 0, 3, 0, (Color) new Color(0, 0, 0)));
@@ -174,24 +193,30 @@ public class LoginWindow extends JFrame implements ActionListener{
 	/********** EVENT HANDLER **********/
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnLogin) {
-			var isValid = Database.confirmLogin(txtUsername.getText(), txtPassword.getPassword());
-			if (isValid){
-				this.dispose();
-				EventQueue.invokeLater(new Runnable() {
-					public void run() {
-						try {
-							MainWindow frame = new MainWindow();
-							frame.setVisible(true);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
+			confirmLogin();
+		}
+	}
+	
+	private void confirmLogin() {
+		var isValid = Database.confirmLogin(txtUsername.getText(), txtPassword.getPassword());
+		if (isValid){
+			JOptionPane.showMessageDialog(this, "LOGIN SUCCESSFUL", "NOICE", JOptionPane.INFORMATION_MESSAGE);
+			this.dispose();
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					try {
+						MainWindow frame = new MainWindow();
+						frame.setVisible(true);
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
-				});
-				JOptionPane.showMessageDialog(this, "LOGIN SUCCESSFUL", "NOICE", JOptionPane.PLAIN_MESSAGE);
-			}
-			else {
-				JOptionPane.showMessageDialog(this, "LOGIN ERROR", "ERROR", JOptionPane.ERROR_MESSAGE);
-			}
+				}
+			});
+		}
+		else {
+			JOptionPane.showMessageDialog(this, "LOGIN ERROR", "ERROR", JOptionPane.ERROR_MESSAGE);
+			txtUsername.setText(null);
+			txtPassword.setText(null);
 		}
 	}
 }
