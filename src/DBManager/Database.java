@@ -2,6 +2,7 @@ package DBManager;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -97,8 +98,33 @@ public class Database {
         }
     }
 
+    public static void addStudent(Object[] studentInfo){
+        try{
+            String sqlstm = "INSERT INTO STUDENT VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+            PreparedStatement stm = ServerConnection.prepareStatement(sqlstm);
+
+            stm.setInt(1, (int)studentInfo[0]);         //STUDENT_ID
+            stm.setString(2, (String)studentInfo[1]);   //LAST_NAME
+            stm.setString(3, (String)studentInfo[2]);   //FIRST_NAME
+            stm.setString(4, (String)studentInfo[3]);   //MIDDLE_NAME
+            stm.setString(5, (String)studentInfo[4]);   //GENDER
+            stm.setString(6, (String)studentInfo[5]);   //DEGREE_PROGRAM
+            stm.setInt(7, (int)studentInfo[6]);         //YEAR_LEVEL
+            stm.setInt(8, (int)studentInfo[7]);         //BLOCK_NUMBER
+            stm.setInt(9, (int)studentInfo[8]);         //DEPARTMENT_HEAD_ID
+            stm.setString(10, (String)studentInfo[9]);  //STATUS
+            stm.setString(11, (String)studentInfo[10]); //SCHOOL_EMAIL
+            stm.setString(12, (String)studentInfo[11]); //CONTACT_NUMBER
+
+            stm.execute();
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+        }
+    }
+
     public static Object[] getStudentInfo(int id){
-        Object[] studentInfo = {};
+        Object[] studentInfo = new Object[12];
         try{
             Statement stm = ServerConnection.createStatement();
             String sqlstm = "SELECT * FROM STUDENT WHERE STUDENT_ID = " + Integer.toString(id) + ";";
@@ -106,8 +132,8 @@ public class Database {
 
             if (rs.next()){
                 studentInfo[0] = rs.getInt(1);      //STUDENT_ID
-                studentInfo[2] = rs.getString(3);   //LAST_NAME
-                studentInfo[1] = rs.getString(2);   //FIRST_NAME
+                studentInfo[1] = rs.getString(2);   //LAST_NAME
+                studentInfo[2] = rs.getString(3);   //FIRST_NAME
                 studentInfo[3] = rs.getString(4);   //MIDDLE_NAME
                 studentInfo[4] = rs.getString(5);   //GENDER
                 studentInfo[5] = rs.getString(6);   //DEGREE_PROGRAM
