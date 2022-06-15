@@ -9,11 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.io.ObjectInputFilter.Status;
 import java.awt.Color;
 import javax.swing.border.LineBorder;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.MatteBorder;
 
 import DBManager.Database;
 

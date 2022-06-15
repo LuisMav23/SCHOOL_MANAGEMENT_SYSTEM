@@ -78,6 +78,25 @@ public class Database {
         return Email;
     }
 
+    public static int getRowCount(String table) {
+        try{
+            Statement stm = ServerConnection.createStatement();
+            String sqlstm = "SELECT COUNT(*) FROM " + table + ";";
+            ResultSet rs = stm.executeQuery(sqlstm);
+
+            if (rs.next()){
+                return rs.getInt(0);
+            }
+            else{
+                return 0;
+            }
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+            return 0;
+        }
+    }
+
     public static Object[] getStudentInfo(int id){
         Object[] studentInfo = {};
         try{
@@ -100,6 +119,33 @@ public class Database {
                 studentInfo[11] = rs.getString(12); //CONTACT_NUMBER
             }
             return studentInfo;
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    public static Object[] getFacultyInfo(int id){
+        Object[] facultyInfo = {};
+        try{
+            Statement stm = ServerConnection.createStatement();
+            String sqlstm = "SELECT * FROM FACULTY WHERE FACULTY_ID = " + Integer.toString(id) + ";";
+            ResultSet rs = stm.executeQuery(sqlstm);
+
+            if (rs.next()){
+                facultyInfo[0] = rs.getInt(1);      //FACULTY_ID
+                facultyInfo[2] = rs.getString(3);   //LAST_NAME
+                facultyInfo[1] = rs.getString(2);   //FIRST_NAME
+                facultyInfo[3] = rs.getString(4);   //MIDDLE_NAME
+                facultyInfo[4] = rs.getString(5);   //GENDER
+                facultyInfo[5] = rs.getInt(6);      //DEPARTMENT_ID
+                facultyInfo[6] = rs.getInt(7);      //SUPER_ID
+                facultyInfo[7] = rs.getDouble(8);   //SALARY
+                facultyInfo[8] = rs.getString(9);   //FACULTYL_EMAIL
+                facultyInfo[9] = rs.getString(10);  //CONTACT_NUMBER
+            }
+            return facultyInfo;
         }
         catch (SQLException ex){
             ex.printStackTrace();
