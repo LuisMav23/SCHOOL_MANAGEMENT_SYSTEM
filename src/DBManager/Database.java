@@ -6,6 +6,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JOptionPane;
+
+import SMSApp.StudentPanel;
 
 public class Database {
 	private static Connection ServerConnection = null;
@@ -20,7 +26,7 @@ public class Database {
                 } catch (ClassNotFoundException e) {
                     System.out.println(e.getMessage());
                 }  
-                ServerConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/School_Management_System","root","GABRIEL232514");
+                ServerConnection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/School_Management_System","root","GABRIEL232514");
                 // System.out.print("Connection Successful");
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
@@ -100,6 +106,56 @@ public class Database {
         }
     }
 
+    public static List<Object[]> searchStudent(String keyword){
+        List<Object[]> students = new ArrayList<>();
+        try{
+            if (keyword.isBlank()){
+                Statement stm = ServerConnection.createStatement();
+                String sqlstm = "SELECT * FROM STUDENT;";
+                ResultSet rs = stm.executeQuery(sqlstm);
+                while(rs.next()){
+                    students.add(setStudentInfoArray(rs));
+                }
+                return students;
+            }
+            else {
+                Statement stm = ServerConnection.createStatement();
+                String sqlstm = "SELECT * FROM STUDENT WHERE LAST_NAME LIKE '%" + keyword + 
+                                "%' OR FIRST_NAME LIKE '%" + keyword + 
+                                "%' OR MIDDLE_NAME LIKE '%" + keyword + "%';";
+                ResultSet rs = stm.executeQuery(sqlstm);
+                while(rs.next()){
+                    students.add(setStudentInfoArray(rs));
+                }
+                return students;
+            }
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+            return null;
+        }
+        
+    }
+
+    public static List<Object[]> searchStudentByID(int id){
+        List<Object[]> students = new ArrayList<>();
+        try{
+            Statement stm = ServerConnection.createStatement();
+            String sqlstm = "SELECT * FROM STUDENT WHERE STUDENT_ID =" + id + ";";
+            ResultSet rs = stm.executeQuery(sqlstm);
+            while(rs.next()){
+                students.add(setStudentInfoArray(rs));
+            }
+            return students;
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+            return null;
+        }
+        
+    }
+
+
     public static void addStudent(Object[] studentInfo){
         try{
             String sqlstm = "INSERT INTO STUDENT VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -130,8 +186,12 @@ public class Database {
             Statement stm = ServerConnection.createStatement();
             String sqlstm = "SELECT * FROM STUDENT WHERE STUDENT_ID = " + Integer.toString(id) + ";";
             ResultSet rs = stm.executeQuery(sqlstm);
-
-            return setStudentInfoArray(rs);
+            if (rs.next()){
+                return setStudentInfoArray(rs);
+            }
+            else{
+                return null;
+            }
         }
         catch (SQLException ex){
             ex.printStackTrace();
@@ -145,8 +205,12 @@ public class Database {
             Statement stm = ServerConnection.createStatement();
             String sqlstm = "SELECT * FROM FACULTY WHERE FACULTY_ID = " + Integer.toString(id) + ";";
             ResultSet rs = stm.executeQuery(sqlstm);
-
-            return setFacultyInfoArray(rs);
+            if (rs.next()){
+                return setFacultyInfoArray(rs);
+            }
+            else {
+                return null;
+            }
         }
         catch (SQLException ex){
             ex.printStackTrace();
@@ -158,37 +222,35 @@ public class Database {
 
     private static Object[] setStudentInfoArray(ResultSet rs) throws SQLException{
         Object[] studentInfo = new Object[12];
-        if (rs.next()){
-            studentInfo[0] = rs.getInt(1);      //STUDENT_ID
-            studentInfo[1] = rs.getString(2);   //LAST_NAME
-            studentInfo[2] = rs.getString(3);   //FIRST_NAME
-            studentInfo[3] = rs.getString(4);   //MIDDLE_NAME
-            studentInfo[4] = rs.getString(5);   //GENDER
-            studentInfo[5] = rs.getString(6);   //DEGREE_PROGRAM
-            studentInfo[6] = rs.getInt(7);      //YEAR_LEVEL
-            studentInfo[7] = rs.getInt(8);      //BLOCK_NUMBER
-            studentInfo[8] = rs.getInt(9);      //DEPARTMENT_HEAD_ID
-            studentInfo[9] = rs.getString(10);  //STATUS
-            studentInfo[10] = rs.getString(11); //SCHOOL_EMAIL
-            studentInfo[11] = rs.getString(12); //CONTACT_NUMBER
-        }
+
+        studentInfo[0] = rs.getInt(1);      //STUDENT_ID
+        studentInfo[1] = rs.getString(2);   //LAST_NAME
+        studentInfo[2] = rs.getString(3);   //FIRST_NAME
+        studentInfo[3] = rs.getString(4);   //MIDDLE_NAME
+        studentInfo[4] = rs.getString(5);   //GENDER
+        studentInfo[5] = rs.getString(6);   //DEGREE_PROGRAM
+        studentInfo[6] = rs.getInt(7);      //YEAR_LEVEL
+        studentInfo[7] = rs.getInt(8);      //BLOCK_NUMBER
+        studentInfo[8] = rs.getInt(9);      //DEPARTMENT_HEAD_ID
+        studentInfo[9] = rs.getString(10);  //STATUS
+        studentInfo[10] = rs.getString(11); //SCHOOL_EMAIL
+        studentInfo[11] = rs.getString(12); //CONTACT_NUMBER
         return studentInfo;
     }
 
     private static Object[] setFacultyInfoArray(ResultSet rs) throws SQLException{
         Object[] facultyInfo = new Object[10];
-        if (rs.next()){
-            facultyInfo[0] = rs.getInt(1);      //FACULTY_ID
-            facultyInfo[2] = rs.getString(3);   //LAST_NAME
-            facultyInfo[1] = rs.getString(2);   //FIRST_NAME
-            facultyInfo[3] = rs.getString(4);   //MIDDLE_NAME
-            facultyInfo[4] = rs.getString(5);   //GENDER
-            facultyInfo[5] = rs.getInt(6);      //DEPARTMENT_ID
-            facultyInfo[6] = rs.getInt(7);      //SUPER_ID
-            facultyInfo[7] = rs.getDouble(8);   //SALARY
-            facultyInfo[8] = rs.getString(9);   //FACULTYL_EMAIL
-            facultyInfo[9] = rs.getString(10);  //CONTACT_NUMBER
-        }
+        
+        facultyInfo[0] = rs.getInt(1);      //FACULTY_ID
+        facultyInfo[2] = rs.getString(3);   //LAST_NAME
+        facultyInfo[1] = rs.getString(2);   //FIRST_NAME
+        facultyInfo[3] = rs.getString(4);   //MIDDLE_NAME
+        facultyInfo[4] = rs.getString(5);   //GENDER
+        facultyInfo[5] = rs.getInt(6);      //DEPARTMENT_ID
+        facultyInfo[6] = rs.getInt(7);      //SUPER_ID
+        facultyInfo[7] = rs.getDouble(8);   //SALARY
+        facultyInfo[8] = rs.getString(9);   //FACULTYL_EMAIL
+        facultyInfo[9] = rs.getString(10);  //CONTACT_NUMBER
         return facultyInfo;
     }
 

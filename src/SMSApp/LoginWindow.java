@@ -15,6 +15,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 
 import javax.swing.border.LineBorder;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.border.MatteBorder;
@@ -34,6 +35,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.net.URL;
 
 public class LoginWindow extends JFrame implements ActionListener{
 
@@ -183,6 +185,13 @@ public class LoginWindow extends JFrame implements ActionListener{
 		lblLogin.setFont(new Font("MS UI Gothic", Font.BOLD, 50));
 		lblLogin.setBounds(31, 132, 450, 54);
 		LoginPanel.add(lblLogin);
+		
+		JLabel lblNewLabel = new JLabel("LOGO");
+		lblNewLabel.setForeground(Color.WHITE);
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 99));
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setBounds(45, 48, 722, 657);
+		contentPane.add(lblNewLabel);
 		setLocationRelativeTo(null);
 	}
 	

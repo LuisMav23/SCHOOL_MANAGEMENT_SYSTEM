@@ -9,6 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.Color;
 import javax.swing.border.LineBorder;
 
@@ -16,6 +19,7 @@ import DBManager.Database;
 
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
@@ -23,11 +27,14 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
-public class StudentPanel extends JPanel implements ActionListener, ItemListener{
+public class StudentPanel extends JPanel implements ActionListener, ItemListener	{
 
 	private int[] selectedRows;
 	private String action = "ADD";
-	private final DefaultTableModel PersonalInfoTable = new DefaultTableModel(
+	private List<Object[]> searchedStudents = new ArrayList<>();
+	private boolean isTableEmpty = true;
+
+	private DefaultTableModel PersonalInfoTable = new DefaultTableModel(
 		new Object[][] {
 		},
 		new String[] {
@@ -35,7 +42,7 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 		}
 	);
 
-	private final DefaultTableModel CourseInfoTable = new DefaultTableModel(
+	private DefaultTableModel CourseInfoTable = new DefaultTableModel(
 		new Object[][] {
 		},
 		new String[] {
@@ -43,7 +50,7 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 		}
 	);
 
-	private final DefaultTableModel ContactInfoTable = new DefaultTableModel(
+	private DefaultTableModel ContactInfoTable = new DefaultTableModel(
 		new Object[][] {
 		},
 		new String[] {
@@ -51,7 +58,9 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 		}
 	);
 
-	private JTextField textField;
+
+
+	private JTextField txtSearchBar;
 	private JPanel MainStudentPanel;
 	private JButton btnSearch;
 	private JButton btnSearchById;
@@ -102,19 +111,20 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 		add(MainStudentPanel, "name_39219436068400");
 		MainStudentPanel.setLayout(null);
 		
-		textField = new JTextField();
-		textField.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		textField.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
-		textField.setText("");
-		textField.setBounds(805, 9, 434, 42);
-		MainStudentPanel.add(textField);
-		textField.setColumns(10);
+		txtSearchBar = new JTextField();
+		txtSearchBar.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		txtSearchBar.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
+		txtSearchBar.setText("");
+		txtSearchBar.setBounds(805, 9, 434, 42);
+		MainStudentPanel.add(txtSearchBar);
+		txtSearchBar.setColumns(10);
 		
 		btnSearch = new JButton("Search");
 		btnSearch.setBackground(new Color(255, 255, 255));
 		btnSearch.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
 		btnSearch.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnSearch.setBounds(1249, 15, 95, 32);
+		btnSearch.addActionListener(this);
 		MainStudentPanel.add(btnSearch);
 		
 		btnSearchById = new JButton("Search by ID");
@@ -122,6 +132,7 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 		btnSearchById.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
 		btnSearchById.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnSearchById.setBounds(1354, 15, 125, 32);
+		btnSearchById.addActionListener(this);
 		MainStudentPanel.add(btnSearchById);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -324,14 +335,47 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 		btnG.setBounds(10, 384, 73, 28);
 		InfoPanel.add(btnG);
 
-		
 	}
 
 	/********************** EVENT HANDLERS **********************/
 	@Override
 	public void actionPerformed(ActionEvent e) {
+
+		if (e.getSource() == btnSearch){
+			searchedStudents = Database.searchStudent(txtSearchBar.getText());
+			if (isTableEmpty){
+				fillTable((DefaultTableModel) table.getModel());
+			}
+			else {
+				clearTable(PersonalInfoTable);
+				clearTable(CourseInfoTable);
+				clearTable(ContactInfoTable);
+				isTableEmpty = true;
+				fillTable((DefaultTableModel) table.getModel());
+			}
+		}
+
+		if (e.getSource() == btnSearchById){
+			try{
+				searchedStudents = Database.searchStudentByID(Integer.parseInt(txtSearchBar.getText()));
+				if (isTableEmpty){
+					fillTable((DefaultTableModel) table.getModel());
+				}
+				else {
+					clearTable(PersonalInfoTable);
+					clearTable(CourseInfoTable);
+					clearTable(ContactInfoTable);
+					isTableEmpty = true;
+					fillTable((DefaultTableModel) table.getModel());
+				}
+			}
+			catch (Exception ex) {
+				ex.printStackTrace();
+				JOptionPane.showMessageDialog(this, "INVALID ID", "INVALID", JOptionPane.ERROR_MESSAGE);
+			}
+		}
 		
-		selectedRows = table.getSelectedRows();
+		// selectedRows = table.getSelectedRows();
 
 		if (e.getSource() == btnAdd){
 			setActionAdd();
@@ -473,33 +517,63 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 			Object[] studentInfo = Database.getStudentInfo((int)table.getModel().getValueAt(selectedRows[0], 0));
 
 			txtID.setText(Integer.toString((int)studentInfo[0]));
-
 			txtLastName.setText((String)studentInfo[1]);
-	
 			txtFirstName.setText((String)studentInfo[2]);
-	
 			txtMiddleName.setText((String)studentInfo[3]);
-	
 			cmbGender.setSelectedItem((String)studentInfo[4]);
-	
 			cmbDegreeProgram.setSelectedItem((String)studentInfo[5]);
-	
 			cmbYearLevel.setSelectedItem(Integer.toString((int)studentInfo[6]));
-				
 			cmbBlockNumber.setSelectedItem(Integer.toString((int)studentInfo[7]));
-
 			txtDeptHeadID.setText(Integer.toString((int)studentInfo[8]));
-			
 			cmbStatus.setSelectedItem((String)studentInfo[9]);
-
 			txtSchoolEmail.setText((String)studentInfo[10]);
-	
 			txtContactNumber.setText((String)studentInfo[11]);
 
 		}
 	}
 
+	private void clearTable(DefaultTableModel TableModel){
+		if (TableModel.getRowCount() != 0){
+			for (int i = TableModel.getRowCount() - 1; i >= 0; i--){
+				TableModel.removeRow(i);
+			}
+		}
+	}
 
+	private void fillTable(DefaultTableModel TableModel) {
+		for (Object[] obj : searchedStudents){
+
+			PersonalInfoTable.addRow(new Object[]{
+				obj[0], //STUDENT_ID
+				obj[1], //LAST_NAME
+				obj[2], //FIRST_NAME
+				obj[3], //MIDDLE_NAME
+				obj[4]  //GENDER
+			});
+
+			CourseInfoTable.addRow(new Object[]{
+				obj[0], //STUDENT_ID
+				obj[1], //LAST_NAME
+				obj[2], //FIRST_NAME
+				obj[3], //MIDDLE_NAME
+				obj[5], //DEGREE_PROGRAM
+				obj[6], //YEAR_LEVEL
+				obj[7], //BLOCK_NUMBER
+				obj[8], //DEPARTMENT_HEAD_ID
+				obj[9]  //STATUS
+			});
+
+			ContactInfoTable.addRow(new Object[]{
+				obj[0], //STUDENT_ID
+				obj[1], //LAST_NAME
+				obj[2], //FIRST_NAME
+				obj[3], //MIDDLE_NAME
+				obj[10],//SCHOOL_EMAIL
+				obj[11] //CONTACT_NUMBER
+			});
+		}
+		isTableEmpty = false;
+	}
 
 
 
