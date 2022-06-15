@@ -10,6 +10,8 @@ import java.sql.Statement;
 public class Database {
 	private static Connection ServerConnection = null;
 	
+
+    /*********** PRIVATE METHODS **********/
 	public static void connect(){
         if (ServerConnection == null){
             try {
@@ -124,27 +126,12 @@ public class Database {
     }
 
     public static Object[] getStudentInfo(int id){
-        Object[] studentInfo = new Object[12];
         try{
             Statement stm = ServerConnection.createStatement();
             String sqlstm = "SELECT * FROM STUDENT WHERE STUDENT_ID = " + Integer.toString(id) + ";";
             ResultSet rs = stm.executeQuery(sqlstm);
 
-            if (rs.next()){
-                studentInfo[0] = rs.getInt(1);      //STUDENT_ID
-                studentInfo[1] = rs.getString(2);   //LAST_NAME
-                studentInfo[2] = rs.getString(3);   //FIRST_NAME
-                studentInfo[3] = rs.getString(4);   //MIDDLE_NAME
-                studentInfo[4] = rs.getString(5);   //GENDER
-                studentInfo[5] = rs.getString(6);   //DEGREE_PROGRAM
-                studentInfo[6] = rs.getInt(7);      //YEAR_LEVEL
-                studentInfo[7] = rs.getInt(8);      //BLOCK_NUMBER
-                studentInfo[8] = rs.getInt(9);      //DEPARTMENT_HEAD_ID
-                studentInfo[9] = rs.getString(10);  //STATUS
-                studentInfo[10] = rs.getString(11); //SCHOOL_EMAIL
-                studentInfo[11] = rs.getString(12); //CONTACT_NUMBER
-            }
-            return studentInfo;
+            return setStudentInfoArray(rs);
         }
         catch (SQLException ex){
             ex.printStackTrace();
@@ -153,30 +140,56 @@ public class Database {
     }
 
     public static Object[] getFacultyInfo(int id){
-        Object[] facultyInfo = {};
+        
         try{
             Statement stm = ServerConnection.createStatement();
             String sqlstm = "SELECT * FROM FACULTY WHERE FACULTY_ID = " + Integer.toString(id) + ";";
             ResultSet rs = stm.executeQuery(sqlstm);
 
-            if (rs.next()){
-                facultyInfo[0] = rs.getInt(1);      //FACULTY_ID
-                facultyInfo[2] = rs.getString(3);   //LAST_NAME
-                facultyInfo[1] = rs.getString(2);   //FIRST_NAME
-                facultyInfo[3] = rs.getString(4);   //MIDDLE_NAME
-                facultyInfo[4] = rs.getString(5);   //GENDER
-                facultyInfo[5] = rs.getInt(6);      //DEPARTMENT_ID
-                facultyInfo[6] = rs.getInt(7);      //SUPER_ID
-                facultyInfo[7] = rs.getDouble(8);   //SALARY
-                facultyInfo[8] = rs.getString(9);   //FACULTYL_EMAIL
-                facultyInfo[9] = rs.getString(10);  //CONTACT_NUMBER
-            }
-            return facultyInfo;
+            return setFacultyInfoArray(rs);
         }
         catch (SQLException ex){
             ex.printStackTrace();
             return null;
         }
+    }
+
+    /*********** END OF PUBLIC METHODS ************/
+
+    private static Object[] setStudentInfoArray(ResultSet rs) throws SQLException{
+        Object[] studentInfo = new Object[12];
+        if (rs.next()){
+            studentInfo[0] = rs.getInt(1);      //STUDENT_ID
+            studentInfo[1] = rs.getString(2);   //LAST_NAME
+            studentInfo[2] = rs.getString(3);   //FIRST_NAME
+            studentInfo[3] = rs.getString(4);   //MIDDLE_NAME
+            studentInfo[4] = rs.getString(5);   //GENDER
+            studentInfo[5] = rs.getString(6);   //DEGREE_PROGRAM
+            studentInfo[6] = rs.getInt(7);      //YEAR_LEVEL
+            studentInfo[7] = rs.getInt(8);      //BLOCK_NUMBER
+            studentInfo[8] = rs.getInt(9);      //DEPARTMENT_HEAD_ID
+            studentInfo[9] = rs.getString(10);  //STATUS
+            studentInfo[10] = rs.getString(11); //SCHOOL_EMAIL
+            studentInfo[11] = rs.getString(12); //CONTACT_NUMBER
+        }
+        return studentInfo;
+    }
+
+    private static Object[] setFacultyInfoArray(ResultSet rs) throws SQLException{
+        Object[] facultyInfo = new Object[10];
+        if (rs.next()){
+            facultyInfo[0] = rs.getInt(1);      //FACULTY_ID
+            facultyInfo[2] = rs.getString(3);   //LAST_NAME
+            facultyInfo[1] = rs.getString(2);   //FIRST_NAME
+            facultyInfo[3] = rs.getString(4);   //MIDDLE_NAME
+            facultyInfo[4] = rs.getString(5);   //GENDER
+            facultyInfo[5] = rs.getInt(6);      //DEPARTMENT_ID
+            facultyInfo[6] = rs.getInt(7);      //SUPER_ID
+            facultyInfo[7] = rs.getDouble(8);   //SALARY
+            facultyInfo[8] = rs.getString(9);   //FACULTYL_EMAIL
+            facultyInfo[9] = rs.getString(10);  //CONTACT_NUMBER
+        }
+        return facultyInfo;
     }
 
     
