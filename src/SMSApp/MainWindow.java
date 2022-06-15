@@ -33,7 +33,7 @@ public class MainWindow extends JFrame implements ActionListener{
 	private JButton btnLibrary;
 	private JButton btnAdmin;
 	private JButton btnLogOut;
-	private JPanel StudentPanel;
+	private StudentPanel StudentPanel;
 	private JPanel FacultyPanel;
 	private JPanel CoursePanel;
 	private JPanel LibraryPanel;
@@ -144,14 +144,12 @@ public class MainWindow extends JFrame implements ActionListener{
 		
 		
 		ContentCardPanel = new JPanel();
-		ContentCardPanel.setBounds(0, 100, 1500, 700);
+		ContentCardPanel.setBounds(0, 100, 1500, 663);
 		contentPane.add(ContentCardPanel);
 		ContentCardPanel.setLayout(new CardLayout(0, 0));
 		
-		StudentPanel = new JPanel();
-		StudentPanel.setBackground(new Color(51, 0, 255));
+		StudentPanel = new StudentPanel();
 		ContentCardPanel.add(StudentPanel, "Student Panel");
-		StudentPanel.setLayout(null);
 		
 		FacultyPanel = new JPanel();
 		FacultyPanel.setBackground(new Color(255, 102, 255));
