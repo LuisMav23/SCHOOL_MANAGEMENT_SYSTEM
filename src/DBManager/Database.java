@@ -77,4 +77,36 @@ public class Database {
 
         return Email;
     }
+
+    public static Object[] getStudentInfo(int id){
+        Object[] studentInfo = {};
+        try{
+            Statement stm = ServerConnection.createStatement();
+            String sqlstm = "SELECT * FROM STUDENT WHERE STUDENT_ID = " + Integer.toString(id) + ";";
+            ResultSet rs = stm.executeQuery(sqlstm);
+
+            if (rs.next()){
+                studentInfo[0] = rs.getInt(1);      //STUDENT_ID
+                studentInfo[2] = rs.getString(3);   //LAST_NAME
+                studentInfo[1] = rs.getString(2);   //FIRST_NAME
+                studentInfo[3] = rs.getString(4);   //MIDDLE_NAME
+                studentInfo[4] = rs.getString(5);   //GENDER
+                studentInfo[5] = rs.getString(6);   //DEGREE_PROGRAM
+                studentInfo[6] = rs.getInt(7);      //YEAR_LEVEL
+                studentInfo[7] = rs.getInt(8);      //BLOCK_NUMBER
+                studentInfo[8] = rs.getInt(9);      //DEPARTMENT_HEAD_ID
+                studentInfo[9] = rs.getString(10);  //STATUS
+                studentInfo[10] = rs.getString(11); //SCHOOL_EMAIL
+                studentInfo[11] = rs.getString(12); //CONTACT_NUMBER
+            }
+            return studentInfo;
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    
+
 }

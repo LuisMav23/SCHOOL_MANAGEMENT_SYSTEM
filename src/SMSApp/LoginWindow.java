@@ -87,8 +87,8 @@ public class LoginWindow extends JFrame implements ActionListener{
 	            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 	                    RenderingHints.VALUE_ANTIALIAS_ON);
 	            GradientPaint gp = new GradientPaint(0, 0,
-	                    Color.decode("#FBA452"), 0, getHeight(),
-	                    Color.decode("#FB3A5D"));
+	                    Color.decode("#3a1c71"), 0, getHeight(),
+	                    Color.decode("#ffaf7b"));
 	            g2d.setPaint(gp);
 	            g2d.fillRect(0, 0, getWidth(), getHeight()); 
 
@@ -200,7 +200,7 @@ public class LoginWindow extends JFrame implements ActionListener{
 	private void confirmLogin() {
 		var isValid = Database.confirmLogin(txtUsername.getText(), txtPassword.getPassword());
 		if (isValid){
-			JOptionPane.showMessageDialog(this, "LOGIN SUCCESSFUL", "NOICE", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(this, "LOGIN SUCCESSFUL", "LOGIN", JOptionPane.INFORMATION_MESSAGE);
 			this.dispose();
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {

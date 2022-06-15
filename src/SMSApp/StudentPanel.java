@@ -12,15 +12,20 @@ import java.awt.Color;
 import javax.swing.border.LineBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.MatteBorder;
+
+import DBManager.Database;
+
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 public class StudentPanel extends JPanel implements ActionListener{
 
+	private int[] selectedRows;
 	private String action = "ADD";
 
 	private JTextField textField;
@@ -127,6 +132,7 @@ public class StudentPanel extends JPanel implements ActionListener{
 		btnRemove.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		btnRemove.setBackground(new Color(255, 250, 250));
 		btnRemove.setBounds(135, 599, 115, 32);
+		btnRemove.addActionListener(this);
 		MainStudentPanel.add(btnRemove);
 		
 		btnEdit = new JButton("EDIT");
@@ -195,6 +201,7 @@ public class StudentPanel extends JPanel implements ActionListener{
 		InfoPanel.add(lblNewLabel_4);
 		
 		cmbGender = new JComboBox();
+		cmbGender.setModel(new DefaultComboBoxModel(new String[] {"M", "F"}));
 		cmbGender.setBounds(84, 234, 109, 22);
 		InfoPanel.add(cmbGender);
 		
@@ -242,6 +249,7 @@ public class StudentPanel extends JPanel implements ActionListener{
 		InfoPanel.add(lblStatus);
 		
 		cmbStatus = new JComboBox();
+		cmbStatus.setModel(new DefaultComboBoxModel(new String[] {"REGULAR", "IRREGULAR"}));
 		cmbStatus.setBounds(132, 335, 159, 22);
 		InfoPanel.add(cmbStatus);
 		
@@ -278,16 +286,25 @@ public class StudentPanel extends JPanel implements ActionListener{
 		
 		AddStudentPanel = new JPanel();
 		add(AddStudentPanel, "name_39224549468000");
+
+		
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
+		selectedRows = table.getSelectedRows();
+
 		if (e.getSource() == btnAdd){
 			setActionAdd();
+		}
+		else if (e.getSource() == btnRemove){
+			setActionRemove();
 		}
 	}
 
 	private void setActionAdd(){
+		
 		action = "ADD";
 		lblAction.setText(action);;
 		txtID.setText(null);
@@ -302,19 +319,19 @@ public class StudentPanel extends JPanel implements ActionListener{
 		txtMiddleName.setText(null);
 		txtMiddleName.setEditable(true);
 
-		cmbGender.setSelectedIndex(0);
+		cmbGender.setSelectedItem(null);
 		cmbGender.setEditable(true);
 
-		cmbDegreeProgram.setSelectedIndex(0);
+		cmbDegreeProgram.setSelectedItem(null);
 		cmbDegreeProgram.setEditable(true);
 
 		txtDeptHeadID.setText(null);
 		txtDeptHeadID.setEditable(false);
 
-		cmbYearLevel.setSelectedIndex(0);
+		cmbYearLevel.setSelectedItem(null);
 		cmbYearLevel.setEditable(true);
 			
-		cmbBlockNumber.setSelectedIndex(0);
+		cmbBlockNumber.setSelectedItem(null);
 		cmbBlockNumber.setEditable(true);
 			
 		txtSchoolEmail.setText(null);
@@ -323,4 +340,82 @@ public class StudentPanel extends JPanel implements ActionListener{
 		txtContactNumber.setText(null);
 		txtContactNumber.setEditable(true);
 	}
+
+	private void setActionRemove(){
+
+		action = "REMOVE";
+
+		
+		lblAction.setText(action);;
+		txtID.setEditable(false);
+		txtLastName.setEditable(false);
+		txtFirstName.setEditable(false);
+		txtMiddleName.setEditable(false);
+		cmbGender.setEditable(false);
+		cmbDegreeProgram.setEditable(false);
+		txtDeptHeadID.setEditable(false);
+		cmbYearLevel.setEditable(false);
+		cmbBlockNumber.setEditable(false);
+		txtSchoolEmail.setEditable(false);
+		txtContactNumber.setEditable(false);
+
+		if (selectedRows != null){
+
+			
+			txtID.setText(null);
+			txtLastName.setText(null);
+	
+			txtFirstName.setText(null);
+	
+			txtMiddleName.setText(null);
+	
+			cmbGender.setSelectedItem(null);
+	
+			cmbDegreeProgram.setSelectedItem(null);
+	
+			txtDeptHeadID.setText(null);
+	
+			cmbYearLevel.setSelectedItem(null);
+				
+			cmbBlockNumber.setSelectedItem(null);
+				
+			txtSchoolEmail.setText(null);
+	
+			txtContactNumber.setText(null);
+
+		} 
+		else {
+
+			Object[] studentInfo = Database.getStudentInfo((int)table.getModel().getValueAt(selectedRows[0], 0));
+
+			txtID.setText(Integer.toString((int)studentInfo[0]));
+			txtLastName.setText(null);
+	
+			txtFirstName.setText(null);
+	
+			txtMiddleName.setText(null);
+	
+			cmbGender.setSelectedItem(null);
+	
+			cmbDegreeProgram.setSelectedItem(null);
+	
+			txtDeptHeadID.setText(null);
+	
+			cmbYearLevel.setSelectedItem(null);
+				
+			cmbBlockNumber.setSelectedItem(null);
+				
+			txtSchoolEmail.setText(null);
+	
+			txtContactNumber.setText(null);
+
+		}
+	}
+
+
+
+
+
+
+
 }
