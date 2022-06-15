@@ -7,6 +7,8 @@ import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.ObjectInputFilter.Status;
 import java.awt.Color;
 import javax.swing.border.LineBorder;
@@ -22,20 +24,43 @@ import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
 
-public class StudentPanel extends JPanel implements ActionListener{
+public class StudentPanel extends JPanel implements ActionListener, ItemListener{
 
 	private int[] selectedRows;
 	private String action = "ADD";
+	private final DefaultTableModel PersonalInfoTable = new DefaultTableModel(
+		new Object[][] {
+		},
+		new String[] {
+			"STUDENT_ID", "LAST_NAME", "FIRST_NAME", "MIDDLE_NAME", "GENDER"
+		}
+	);
+
+	private final DefaultTableModel CourseInfoTable = new DefaultTableModel(
+		new Object[][] {
+		},
+		new String[] {
+			"STUDENT_ID", "LAST_NAME", "FIRST_NAME", "MIDDLE_NAME", "PROGRAM", "YEAR_LEVEL", "BLOCK", "HEAD_ID", "STATUS"
+		}
+	);
+
+	private final DefaultTableModel ContactInfoTable = new DefaultTableModel(
+		new Object[][] {
+		},
+		new String[] {
+			"STUDENT_ID", "LAST_NAME", "FIRST_NAME", "MIDDLE_NAME", "SCHOOL_EMAIL", "CONTACT_NUMBER"
+		}
+	);
 
 	private JTextField textField;
 	private JPanel MainStudentPanel;
 	private JButton btnSearch;
 	private JButton btnSearchById;
-	private JPanel AddStudentPanel;
 	private JLabel lblNewLabel;
 	private JTable table;
-	private JComboBox comboBox;
+	private JComboBox cmbSearchOption;
 	private JButton btnAdd;
 	private JButton btnRemove;
 	private JButton btnEdit;
@@ -107,6 +132,7 @@ public class StudentPanel extends JPanel implements ActionListener{
 		MainStudentPanel.add(scrollPane);
 		
 		table = new JTable();
+		table.setModel(PersonalInfoTable);		
 		scrollPane.setViewportView(table);
 		
 		lblNewLabel = new JLabel("STUDENT DATABASE");
@@ -115,9 +141,12 @@ public class StudentPanel extends JPanel implements ActionListener{
 		lblNewLabel.setBounds(10, 10, 554, 75);
 		MainStudentPanel.add(lblNewLabel);
 		
-		comboBox = new JComboBox();
-		comboBox.setBounds(574, 18, 221, 29);
-		MainStudentPanel.add(comboBox);
+		cmbSearchOption = new JComboBox();
+		cmbSearchOption.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		cmbSearchOption.setModel(new DefaultComboBoxModel(new String[] {"Personal Info", "Course Info", "Contact Info"}));
+		cmbSearchOption.setBounds(574, 18, 221, 29);
+		cmbSearchOption.addItemListener(this);
+		MainStudentPanel.add(cmbSearchOption);
 
 		btnAdd = new JButton("ADD");
 		btnAdd.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
@@ -201,6 +230,7 @@ public class StudentPanel extends JPanel implements ActionListener{
 		InfoPanel.add(lblNewLabel_4);
 		
 		cmbGender = new JComboBox();
+		cmbGender.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		cmbGender.setModel(new DefaultComboBoxModel(new String[] {"M", "F"}));
 		cmbGender.setBounds(84, 234, 109, 22);
 		InfoPanel.add(cmbGender);
@@ -211,6 +241,7 @@ public class StudentPanel extends JPanel implements ActionListener{
 		InfoPanel.add(lblNewLabel_5);
 		
 		cmbDegreeProgram = new JComboBox();
+		cmbDegreeProgram.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		cmbDegreeProgram.setBounds(345, 234, 195, 22);
 		InfoPanel.add(cmbDegreeProgram);
 		
@@ -236,10 +267,14 @@ public class StudentPanel extends JPanel implements ActionListener{
 		InfoPanel.add(lblBlocknumber);
 		
 		cmbYearLevel = new JComboBox();
+		cmbYearLevel.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5"}));
+		cmbYearLevel.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		cmbYearLevel.setBounds(431, 286, 109, 22);
 		InfoPanel.add(cmbYearLevel);
 		
 		cmbBlockNumber = new JComboBox();
+		cmbBlockNumber.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3"}));
+		cmbBlockNumber.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		cmbBlockNumber.setBounds(431, 331, 109, 22);
 		InfoPanel.add(cmbBlockNumber);
 		
@@ -249,6 +284,7 @@ public class StudentPanel extends JPanel implements ActionListener{
 		InfoPanel.add(lblStatus);
 		
 		cmbStatus = new JComboBox();
+		cmbStatus.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		cmbStatus.setModel(new DefaultComboBoxModel(new String[] {"REGULAR", "IRREGULAR"}));
 		cmbStatus.setBounds(132, 335, 159, 22);
 		InfoPanel.add(cmbStatus);
@@ -256,7 +292,7 @@ public class StudentPanel extends JPanel implements ActionListener{
 		txtSchoolEmail = new JTextField();
 		txtSchoolEmail.setEditable(false);
 		txtSchoolEmail.setColumns(10);
-		txtSchoolEmail.setBounds(10, 384, 318, 28);
+		txtSchoolEmail.setBounds(86, 384, 240, 28);
 		InfoPanel.add(txtSchoolEmail);
 		
 		txtContactNumber = new JTextField();
@@ -266,7 +302,7 @@ public class StudentPanel extends JPanel implements ActionListener{
 		
 		lblSchoolemail = new JLabel("SCHOOL_EMAIL");
 		lblSchoolemail.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblSchoolemail.setBounds(117, 422, 112, 19);
+		lblSchoolemail.setBounds(149, 422, 112, 19);
 		InfoPanel.add(lblSchoolemail);
 		
 		lblContactnumber = new JLabel("CONTACT_NUMBER");
@@ -284,12 +320,17 @@ public class StudentPanel extends JPanel implements ActionListener{
 		separator.setBounds(10, 81, 534, 4);
 		InfoPanel.add(separator);
 		
-		AddStudentPanel = new JPanel();
-		add(AddStudentPanel, "name_39224549468000");
+		JButton btnG = new JButton("Generate");
+		btnG.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		btnG.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		btnG.setBackground(new Color(255, 250, 250));
+		btnG.setBounds(10, 384, 73, 28);
+		InfoPanel.add(btnG);
 
 		
 	}
 
+	/********************** EVENT HANDLERS **********************/
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
@@ -303,9 +344,59 @@ public class StudentPanel extends JPanel implements ActionListener{
 		}
 	}
 
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+		if (e.getSource() == cmbSearchOption){
+			setTableModel((String)cmbSearchOption.getSelectedItem());
+		}
+		
+	}
+
+	/****************** END OF EVENT HANDLERS ******************/
+
+	private void setTableModel(String Model) {
+
+		if (Model.equalsIgnoreCase("Personal Info")) {
+			
+			table.setModel(PersonalInfoTable);
+			table.getColumnModel().getColumn(0).setPreferredWidth(80);
+			table.getColumnModel().getColumn(1).setPreferredWidth(100);
+			table.getColumnModel().getColumn(2).setPreferredWidth(130);
+			table.getColumnModel().getColumn(3).setPreferredWidth(100);
+			table.getColumnModel().getColumn(4).setPreferredWidth(100);
+		}
+		else if (Model.equalsIgnoreCase("Course Info")) {
+
+			table.setModel(CourseInfoTable);
+			table.getColumnModel().getColumn(0).setPreferredWidth(80);
+			table.getColumnModel().getColumn(1).setPreferredWidth(100);
+			table.getColumnModel().getColumn(2).setPreferredWidth(130);
+			table.getColumnModel().getColumn(3).setPreferredWidth(100);
+			table.getColumnModel().getColumn(4).setPreferredWidth(100);
+			table.getColumnModel().getColumn(5).setPreferredWidth(70);
+			table.getColumnModel().getColumn(6).setPreferredWidth(60);
+			table.getColumnModel().getColumn(7).setPreferredWidth(60);
+			table.getColumnModel().getColumn(8).setPreferredWidth(70);
+		}
+		else if (Model.equalsIgnoreCase("Contact Info")) {
+
+			table.setModel(ContactInfoTable);
+			table.getColumnModel().getColumn(0).setPreferredWidth(80);
+			table.getColumnModel().getColumn(1).setPreferredWidth(100);
+			table.getColumnModel().getColumn(2).setPreferredWidth(130);
+			table.getColumnModel().getColumn(3).setPreferredWidth(100);
+			table.getColumnModel().getColumn(4).setPreferredWidth(150);
+			table.getColumnModel().getColumn(5).setPreferredWidth(110);
+		}
+
+
+	}
+
 	private void setActionAdd(){
 		
 		action = "ADD";
+
+
 		lblAction.setText(action);;
 		txtID.setText(null);
 		txtID.setEditable(true);
@@ -320,19 +411,22 @@ public class StudentPanel extends JPanel implements ActionListener{
 		txtMiddleName.setEditable(true);
 
 		cmbGender.setSelectedItem(null);
-		cmbGender.setEditable(true);
+		cmbGender.setEditable(false);
 
 		cmbDegreeProgram.setSelectedItem(null);
-		cmbDegreeProgram.setEditable(true);
+		cmbDegreeProgram.setEditable(false);
 
 		txtDeptHeadID.setText(null);
 		txtDeptHeadID.setEditable(false);
 
 		cmbYearLevel.setSelectedItem(null);
-		cmbYearLevel.setEditable(true);
+		cmbYearLevel.setEditable(false);
 			
 		cmbBlockNumber.setSelectedItem(null);
-		cmbBlockNumber.setEditable(true);
+		cmbBlockNumber.setEditable(false);
+
+		cmbStatus.setSelectedItem(null);
+		cmbStatus.setEditable(false);
 			
 		txtSchoolEmail.setText(null);
 		txtSchoolEmail.setEditable(false);
@@ -356,6 +450,7 @@ public class StudentPanel extends JPanel implements ActionListener{
 		txtDeptHeadID.setEditable(false);
 		cmbYearLevel.setEditable(false);
 		cmbBlockNumber.setEditable(false);
+		cmbStatus.setEditable(false);
 		txtSchoolEmail.setEditable(false);
 		txtContactNumber.setEditable(false);
 
@@ -364,23 +459,15 @@ public class StudentPanel extends JPanel implements ActionListener{
 			
 			txtID.setText(null);
 			txtLastName.setText(null);
-	
 			txtFirstName.setText(null);
-	
 			txtMiddleName.setText(null);
-	
 			cmbGender.setSelectedItem(null);
-	
 			cmbDegreeProgram.setSelectedItem(null);
-	
 			txtDeptHeadID.setText(null);
-	
 			cmbYearLevel.setSelectedItem(null);
-				
 			cmbBlockNumber.setSelectedItem(null);
-				
+			cmbStatus.setSelectedItem(null);
 			txtSchoolEmail.setText(null);
-	
 			txtContactNumber.setText(null);
 
 		} 
@@ -389,29 +476,31 @@ public class StudentPanel extends JPanel implements ActionListener{
 			Object[] studentInfo = Database.getStudentInfo((int)table.getModel().getValueAt(selectedRows[0], 0));
 
 			txtID.setText(Integer.toString((int)studentInfo[0]));
-			txtLastName.setText(null);
+
+			txtLastName.setText((String)studentInfo[1]);
 	
-			txtFirstName.setText(null);
+			txtFirstName.setText((String)studentInfo[2]);
 	
-			txtMiddleName.setText(null);
+			txtMiddleName.setText((String)studentInfo[3]);
 	
-			cmbGender.setSelectedItem(null);
+			cmbGender.setSelectedItem((String)studentInfo[4]);
 	
-			cmbDegreeProgram.setSelectedItem(null);
+			cmbDegreeProgram.setSelectedItem((String)studentInfo[5]);
 	
-			txtDeptHeadID.setText(null);
-	
-			cmbYearLevel.setSelectedItem(null);
+			cmbYearLevel.setSelectedItem(Integer.toString((int)studentInfo[6]));
 				
-			cmbBlockNumber.setSelectedItem(null);
-				
-			txtSchoolEmail.setText(null);
+			cmbBlockNumber.setSelectedItem(Integer.toString((int)studentInfo[7]));
+
+			txtDeptHeadID.setText(Integer.toString((int)studentInfo[8]));
+			
+			cmbStatus.setSelectedItem((String)studentInfo[9]);
+
+			txtSchoolEmail.setText((String)studentInfo[10]);
 	
-			txtContactNumber.setText(null);
+			txtContactNumber.setText((String)studentInfo[11]);
 
 		}
 	}
-
 
 
 

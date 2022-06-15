@@ -70,18 +70,19 @@ public class MainWindow extends JFrame implements ActionListener{
 	        }
 
 	    };
+		HeaderPanel.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
 		HeaderPanel.setBackground(Color.RED);
 		HeaderPanel.setBounds(0, 0, 1500, 100);
 		contentPane.add(HeaderPanel);
 		HeaderPanel.setLayout(null);
 		
 		btnStudent = new JButton("STUDENT");
-		btnStudent.setFont(new Font("MS UI Gothic", Font.BOLD, 13));
+		btnStudent.setFont(new Font("MS UI Gothic", Font.BOLD, 18));
 		btnStudent.setForeground(Color.WHITE);
 		btnStudent.setBounds(400, 1, 170, 100);
 		btnStudent.setOpaque(false);
 		btnStudent.setContentAreaFilled(false);
-		btnStudent.setBorder(new MatteBorder(0, 2, 0, 1, (Color) new Color(0, 0, 0)));
+		btnStudent.setBorder(null);
 		btnStudent.addActionListener(this);
 		HeaderPanel.add(btnStudent);
 		
@@ -95,9 +96,9 @@ public class MainWindow extends JFrame implements ActionListener{
 		btnFaculty = new JButton("FACULTY");
 		btnFaculty.setOpaque(false);
 		btnFaculty.setForeground(Color.WHITE);
-		btnFaculty.setFont(new Font("MS UI Gothic", Font.BOLD, 13));
+		btnFaculty.setFont(new Font("MS UI Gothic", Font.BOLD, 18));
 		btnFaculty.setContentAreaFilled(false);
-		btnFaculty.setBorder(new MatteBorder(0, 1, 0, 1, (Color) new Color(0, 0, 0)));
+		btnFaculty.setBorder(null);
 		btnFaculty.setBounds(570, 1, 170, 100);
 		btnFaculty.addActionListener(this);
 		HeaderPanel.add(btnFaculty);
@@ -105,9 +106,9 @@ public class MainWindow extends JFrame implements ActionListener{
 		btnCourse = new JButton("COURSES");
 		btnCourse.setOpaque(false);
 		btnCourse.setForeground(Color.WHITE);
-		btnCourse.setFont(new Font("MS UI Gothic", Font.BOLD, 13));
+		btnCourse.setFont(new Font("MS UI Gothic", Font.BOLD, 18));
 		btnCourse.setContentAreaFilled(false);
-		btnCourse.setBorder(new MatteBorder(0, 1, 0, 1, (Color) new Color(0, 0, 0)));
+		btnCourse.setBorder(null);
 		btnCourse.setBounds(740, 1, 170, 100);
 		btnCourse.addActionListener(this);
 		HeaderPanel.add(btnCourse);
@@ -115,9 +116,9 @@ public class MainWindow extends JFrame implements ActionListener{
 		btnLibrary = new JButton("LIBRARY");
 		btnLibrary.setOpaque(false);
 		btnLibrary.setForeground(Color.WHITE);
-		btnLibrary.setFont(new Font("MS UI Gothic", Font.BOLD, 13));
+		btnLibrary.setFont(new Font("MS UI Gothic", Font.BOLD, 18));
 		btnLibrary.setContentAreaFilled(false);
-		btnLibrary.setBorder(new MatteBorder(0, 1, 0, 1, (Color) new Color(0, 0, 0)));
+		btnLibrary.setBorder(null);
 		btnLibrary.setBounds(910, 1, 170, 100);
 		btnLibrary.addActionListener(this);
 		HeaderPanel.add(btnLibrary);
@@ -125,9 +126,9 @@ public class MainWindow extends JFrame implements ActionListener{
 		btnAdmin = new JButton("ADMIN");
 		btnAdmin.setOpaque(false);
 		btnAdmin.setForeground(Color.WHITE);
-		btnAdmin.setFont(new Font("MS UI Gothic", Font.BOLD, 13));
+		btnAdmin.setFont(new Font("MS UI Gothic", Font.BOLD, 18));
 		btnAdmin.setContentAreaFilled(false);
-		btnAdmin.setBorder(new MatteBorder(0, 1, 0, 2, (Color) new Color(0, 0, 0)));
+		btnAdmin.setBorder(null);
 		btnAdmin.setBounds(1080, 1, 170, 100);
 		btnAdmin.addActionListener(this);
 		HeaderPanel.add(btnAdmin);
@@ -135,9 +136,9 @@ public class MainWindow extends JFrame implements ActionListener{
 		btnLogOut = new JButton("LOG OUT");
 		btnLogOut.setOpaque(false);
 		btnLogOut.setForeground(Color.WHITE);
-		btnLogOut.setFont(new Font("MS UI Gothic", Font.BOLD, 13));
+		btnLogOut.setFont(new Font("MS UI Gothic", Font.BOLD, 18));
 		btnLogOut.setContentAreaFilled(false);
-		btnLogOut.setBorder(new MatteBorder(0, 0, 0, 0, (Color) new Color(0, 0, 0)));
+		btnLogOut.setBorder(null);
 		btnLogOut.setBounds(1249, 1, 241, 100);
 		btnLogOut.addActionListener(this);
 		HeaderPanel.add(btnLogOut);
