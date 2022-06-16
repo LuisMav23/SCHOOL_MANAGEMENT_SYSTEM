@@ -167,6 +167,7 @@ public class MainWindow extends JFrame implements ActionListener{
 		AdminPanel = new JPanel();
 		AdminPanel.setBackground(new Color(102, 0, 255));
 		ContentCardPanel.add(AdminPanel, "Admin Panel");
+		
 	}
 	
 	public void actionPerformed(ActionEvent e) {
