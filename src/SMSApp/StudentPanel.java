@@ -690,7 +690,7 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		// SEARCH PANEL ------------------------
+	// SEARCH PANEL ------------------------
 		if (e.getSource() == btnSearch){
 			searchedStudents = Database.searchStudent(txtSearchBar.getText());
 			if (isTableEmpty){
@@ -725,9 +725,14 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 				JOptionPane.showMessageDialog(this, "INVALID ID", "INVALID", JOptionPane.ERROR_MESSAGE);
 			}
 		}
+
+		if (e.getSource() == btnRefresh){
+			refresh();
+			return;
+		}
 		
 		
-		// ADD PANEL -----------------------------
+	// ADD PANEL -----------------------------
 		if (e.getSource() == btnClear_AddPanel){
 			clearAddPanel();
 			return;
@@ -735,10 +740,6 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 
 		if (e.getSource() == btnConfirm_AddPanel){
 			addStudent();
-		}
-
-		if (e.getSource() == btnRefresh){
-			refresh();
 			return;
 		}
 
@@ -904,6 +905,7 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 		}
 		cmbDegree_AddPanel.setModel((new DefaultComboBoxModel(cmbModel)));
 		cmbDegree_EditPanel.setModel((new DefaultComboBoxModel(cmbModel)));
+		Database.updateStudentDB();
 	}
 
 	private boolean isDigit(String id){

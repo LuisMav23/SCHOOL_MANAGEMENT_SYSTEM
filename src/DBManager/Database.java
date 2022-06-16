@@ -32,6 +32,7 @@ public class Database {
         }
     }
 
+    /* CONFIRM LOGIN BY SEARCHING ADMIN TABLE */
     public static boolean confirmLogin(String U, char[] P){
         var Pword = "";
         for (int i = 0; i < P.length; i++){
@@ -55,6 +56,7 @@ public class Database {
         }
     }
 
+    /* GENERATE AN EMAIL BASED ON THE NAME AND ID OF THE STUDENT */
     public static String generateEmail(String surname, String firstname, String middlename, int id){
         String Email = "";
 
@@ -62,7 +64,7 @@ public class Database {
         Email += fnameArr[0];
         for (int i = 0; i < fnameArr.length; i++){
             char c = fnameArr[i];
-            if (c == ' ') {
+            if (c == ' ' && (i + 1) < fnameArr.length){
                 Email += fnameArr[i + 1];
             }
         }
@@ -89,11 +91,12 @@ public class Database {
 
         String idChar = Integer.toString(id);
 
-        Email += surNew + idChar + "@plm.edu.ph";
+        Email += surNew + idChar + "@scu.edu.ph";
 
         return Email;
     }
 
+    /* FINDS ALL THE ROWS IN A TABLE */
     public static int getRowCount(String table) {
         try{
             Statement stm = ServerConnection.createStatement();
@@ -113,6 +116,7 @@ public class Database {
         }
     }
 
+    /* FINDS ALL STUDENTS THAT MATCHES THE SEACRH KEYWORD */
     public static List<Object[]> searchStudent(String keyword){
         List<Object[]> students = new ArrayList<>();
         try{
@@ -148,6 +152,8 @@ public class Database {
         
     }
 
+
+    /* SEACH ALL STUDENT USING THE ID */
     public static List<Object[]> searchStudentByID(int id){
         List<Object[]> students = new ArrayList<>();
         try{
@@ -166,6 +172,8 @@ public class Database {
         
     }
 
+
+    /* GET ALL COURSES */
     public static List<String> getAllCourse(){
         List<String> course = new ArrayList<>();
         try{
@@ -183,6 +191,8 @@ public class Database {
         }
     }
 
+
+    /* GETS COURSE HEAD ID */
     public static int getCourseHeadID(String course){
         try{
             Statement stm = ServerConnection.createStatement();
@@ -202,6 +212,7 @@ public class Database {
     }
 
 
+    /* ADD STUDENT TO DATABASE */
     public static boolean addStudent(Object[] studentInfo){
         try{
             String sqlstm = "INSERT INTO STUDENT VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -229,6 +240,8 @@ public class Database {
         }
     }
 
+
+    /* GET ALL STUDENT INFO BY ID */
     public static Object[] getStudentInfo(int id){
         try{
             Statement stm = ServerConnection.createStatement();
@@ -247,6 +260,28 @@ public class Database {
         }
     }
 
+    
+    /* UPDATE STUDENT EMAILS AND DEPARTMENT HEAD ID */
+    public static void updateStudentDB(){
+         try{
+            
+            Statement stm = ServerConnection.createStatement();
+            var studentInfo = searchStudent("");
+            for (Object[] obj : studentInfo){
+                var generatedEmail = generateEmail((String)obj[1], (String)obj[2], (String)obj[3], (Integer)obj[0]);
+                String email = "UPDATE STUDENT SET SCHOOL_EMAIL = '" + generatedEmail + "' WHERE STUDENT_ID = " + (Integer)obj[0] + ";";
+                String HeadID = "UPDATE STUDENT SET DEPARTMENT_HEAD_ID = " + getCourseHeadID((String)obj[5]) + " WHERE STUDENT_ID = " + (Integer)obj[0] + ";";
+                stm.execute(email); 
+                stm.execute(HeadID); 
+            }
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+        }
+    }
+
+
+    /* GET ALL FACULTY INFO BY ID*/
     public static Object[] getFacultyInfo(int id){
         
         try{
@@ -265,6 +300,9 @@ public class Database {
             return null;
         }
     }
+
+
+
 
     /*********** END OF PUBLIC METHODS ************/
 

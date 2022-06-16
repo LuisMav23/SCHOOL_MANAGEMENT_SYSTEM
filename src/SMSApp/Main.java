@@ -7,7 +7,8 @@ import DBManager.Database;
 public class Main {
 	public static void main(String[] args) {
 		Database.connect();
-		
+		Database.updateStudentDB();
+
 		// EventQueue.invokeLater(new Runnable() {
 		// 	public void run() {
 		// 		try {
