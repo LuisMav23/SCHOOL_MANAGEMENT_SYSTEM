@@ -31,8 +31,8 @@ import javax.swing.border.MatteBorder;
 
 public class StudentPanel extends JPanel implements ActionListener, ItemListener	{
 
-	private int[] selectedRows;
-	private String action = "ADD";
+	private Object[] selectedStudentToRemove = null;
+	private Object[] selectedStudentToEdit = null;
 	private List<Object[]> searchedStudents = new ArrayList<>();
 	private boolean isTableEmpty = true;
 
@@ -118,7 +118,7 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 	private JComboBox cmbYearLevel_EditPanel;
 	private JComboBox cmbBlock_EditPanel;
 	private JComboBox cmbStatus_EditPanel;
-	private JButton btnGenerate_AddPanel_1;
+	private JButton btnGenerate_EditPanel;
 	private JButton btnConfirm_EditPanel;
 	private JButton btnFind_EditPanel;
 	private JButton btnRefresh;
@@ -509,6 +509,7 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 		btnFind_RemovePanel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		btnFind_RemovePanel.setBackground(new Color(255, 250, 250));
 		btnFind_RemovePanel.setBounds(156, 95, 90, 28);
+		btnFind_RemovePanel.addActionListener(this);
 		RemovePanel.add(btnFind_RemovePanel);
 				
 		EditPanel = new JPanel();
@@ -642,18 +643,20 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 		txtEmail_EditPanel.setBounds(86, 384, 240, 28);
 		EditPanel.add(txtEmail_EditPanel);
 				
-		btnGenerate_AddPanel_1 = new JButton("Generate");
-		btnGenerate_AddPanel_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btnGenerate_AddPanel_1.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		btnGenerate_AddPanel_1.setBackground(new Color(255, 250, 250));
-		btnGenerate_AddPanel_1.setBounds(10, 384, 73, 28);
-		EditPanel.add(btnGenerate_AddPanel_1);
+		btnGenerate_EditPanel = new JButton("Generate");
+		btnGenerate_EditPanel.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		btnGenerate_EditPanel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		btnGenerate_EditPanel.setBackground(new Color(255, 250, 250));
+		btnGenerate_EditPanel.setBounds(10, 384, 73, 28);
+		btnGenerate_EditPanel.addActionListener(this);
+		EditPanel.add(btnGenerate_EditPanel);
 				
 		btnConfirm_EditPanel = new JButton("CONFIRM");
 		btnConfirm_EditPanel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnConfirm_EditPanel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		btnConfirm_EditPanel.setBackground(new Color(255, 250, 250));
 		btnConfirm_EditPanel.setBounds(177, 466, 179, 32);
+		btnConfirm_EditPanel.addActionListener(this);
 		EditPanel.add(btnConfirm_EditPanel);
 				
 		btnFind_EditPanel = new JButton("FIND");
@@ -661,6 +664,7 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 		btnFind_EditPanel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		btnFind_EditPanel.setBackground(new Color(255, 250, 250));
 		btnFind_EditPanel.setBounds(156, 95, 90, 28);
+		btnFind_EditPanel.addActionListener(this);
 		EditPanel.add(btnFind_EditPanel);
 				
 		JLabel lblYearlevel_2 = new JLabel("YEAR_LEVEL:");
@@ -695,6 +699,7 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 			searchedStudents = Database.searchStudent(txtSearchBar.getText());
 			if (isTableEmpty){
 				fillTable((DefaultTableModel) table.getModel());
+				return;
 			}
 			else {
 				clearTable(PersonalInfoTable);
@@ -702,6 +707,7 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 				clearTable(ContactInfoTable);
 				isTableEmpty = true;
 				fillTable((DefaultTableModel) table.getModel());
+				return;
 			}
 		}
 
@@ -710,6 +716,7 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 				searchedStudents = Database.searchStudentByID(Integer.parseInt(txtSearchBar.getText()));
 				if (isTableEmpty){
 					fillTable((DefaultTableModel) table.getModel());
+					return;
 				}
 				else {
 					clearTable(PersonalInfoTable);
@@ -723,6 +730,7 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 			catch (Exception ex) {
 				// ex.printStackTrace();
 				JOptionPane.showMessageDialog(this, "INVALID ID", "INVALID", JOptionPane.ERROR_MESSAGE);
+				return;
 			}
 		}
 
@@ -734,7 +742,17 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 		
 	// ADD PANEL -----------------------------
 		if (e.getSource() == btnClear_AddPanel){
-			clearAddPanel();
+			
+			txtID_AddPanel.setText(null);
+			txtLastName_AddPanel.setText(null);
+			txtFirstName_AddPanel.setText(null);
+			txtMiddleName_AddPanel.setText(null);
+			txtEmail_AddPanel.setText(null);
+			txtContact_AddPanel.setText(null);
+			cmbGender_AddPanel.setSelectedItem((Object)"M");
+			cmbDegree_AddPanel.setSelectedItem((Object)"BSCE");
+			cmbYearLevel_AddPanel.setSelectedItem((Object)"1");
+			cmbBlock_AddPanel.setSelectedItem((Object)"1");
 			return;
 		}
 
@@ -747,12 +765,114 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 			if (!txtFirstName_AddPanel.getText().isBlank() && !txtLastName_AddPanel.getText().isBlank() && isDigit(txtID_AddPanel.getText())) {
 				txtEmail_AddPanel.setText(Database.generateEmail(txtLastName_AddPanel.getText(), txtFirstName_AddPanel.getText(), 
 				txtMiddleName_AddPanel.getText(), Integer.parseInt(txtID_AddPanel.getText())));
+				return;
 			}
 			else {
-				JOptionPane.showMessageDialog(this, "INVALID FIRST_NAME, LAST_NAME, OR ID.", "INVALID", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this, "INVALID FIRST_NAME, LAST_NAME, OR ID", "INVALID", JOptionPane.ERROR_MESSAGE);
+				return;
 			}
 		}
+
+	//REMOVE PANEL ---------------------------------------
+		if(e.getSource() == btnFind_RemovePanel) {
+			if (isDigit(txtID_RemovePanel.getText())){
+				selectedStudentToRemove = Database.getStudentInfo(Integer.parseInt(txtID_RemovePanel.getText()));
+				if (selectedStudentToRemove != null) {
+					txtLastName_RemovePanel.setText((String)selectedStudentToRemove[1]);
+					txtFirstName_RemovePanel.setText((String)selectedStudentToRemove[2]);
+					txtMiddleName_RemovePanel.setText((String)selectedStudentToRemove[3]);
+					txtGender_RemovePanel.setText((String)selectedStudentToRemove[4]);
+					txtDegree_RemovePanel.setText((String)selectedStudentToRemove[5]);
+					txtYearLevel_RemovePanel.setText(Integer.toString((Integer)selectedStudentToRemove[6]));
+					txtBlock_RemovePanel.setText(Integer.toString((Integer)selectedStudentToRemove[7]));
+					txtDeptHeadID_RemovePanel.setText(Integer.toString((Integer)selectedStudentToRemove[8]));
+					txtStatus_RemovePanel.setText((String)selectedStudentToRemove[9]);
+					txtEmail_RemovePanel.setText((String)selectedStudentToRemove[10]);
+					txtContact_RemovePanel.setText((String)selectedStudentToRemove[11]);
+					return;
+				}
+				else{
+					JOptionPane.showMessageDialog(this, "STUDENT DOES NOT EXIST", "ERROR", JOptionPane.ERROR_MESSAGE);
+				return;
+				}
+			}
+			else {
+				JOptionPane.showMessageDialog(this, "INVALID ID", "INVALID", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
+
+		if (e.getSource() == btnRemove_RemovePanel) {
+			if(selectedStudentToRemove != null) {
+				if (Database.deleteStudent((Integer)selectedStudentToRemove[0])){
+					JOptionPane.showMessageDialog(this, "STUDENT SUCCESSFULY REMOVED", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+					return;
+				}
+				else {
+					JOptionPane.showMessageDialog(this, "ERROR REMOVING STUDENT", "ERROR", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+			}
+			else {
+				JOptionPane.showMessageDialog(this, "NO STUDENT IS SELECTED", "ERROR", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
+
+
+
+
+	//EDIT PANEL ---------------------------------------------
+		if(e.getSource() == btnFind_EditPanel) {
+			if (isDigit(txtID_EditPanel.getText())){
+				selectedStudentToEdit = Database.getStudentInfo(Integer.parseInt(txtID_EditPanel.getText()));
+				if (selectedStudentToEdit != null) {
+					txtLastName_EditPanel.setText((String)selectedStudentToEdit[1]);
+					txtFirstName_EditPanel.setText((String)selectedStudentToEdit[2]);
+					txtMiddleName_EditPanel.setText((String)selectedStudentToEdit[3]);
+					cmbGender_EditPanel.setSelectedItem(selectedStudentToEdit[4]);
+					cmbDegree_EditPanel.setSelectedItem(selectedStudentToEdit[5]);
+					cmbYearLevel_EditPanel.setSelectedItem(Integer.toString((Integer)selectedStudentToEdit[6]));
+					cmbBlock_EditPanel.setSelectedItem(Integer.toString((Integer)selectedStudentToEdit[7]));
+					txtDeptHeadID_EditPanel.setText(Integer.toString((Integer)selectedStudentToEdit[8]));
+					cmbStatus_EditPanel.setSelectedItem(selectedStudentToEdit[9]);
+					txtEmail_EditPanel.setText((String)selectedStudentToEdit[10]);
+					txtContact_EditPanel.setText((String)selectedStudentToEdit[11]);
+					return;
+				}
+				else{
+					JOptionPane.showMessageDialog(this, "STUDENT DOES NOT EXIST", "ERROR", JOptionPane.ERROR_MESSAGE);
+				return;
+				}
+			}
+			else {
+				JOptionPane.showMessageDialog(this, "INVALID ID", "INVALID", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+
+		}
+
+		if (e.getSource() == btnConfirm_EditPanel){
+			editStudent();
+			return;
+		}
+
+		if (e.getSource() == btnGenerate_EditPanel) {
+			if (!txtFirstName_EditPanel.getText().isBlank() && !txtLastName_EditPanel.getText().isBlank() && isDigit(txtID_EditPanel.getText())) {
+				txtEmail_EditPanel.setText(Database.generateEmail(txtLastName_EditPanel.getText(), txtFirstName_EditPanel.getText(), 
+				txtMiddleName_EditPanel.getText(), Integer.parseInt(txtID_EditPanel.getText())));
+				return;
+			}
+			else {
+				JOptionPane.showMessageDialog(this, "INVALID FIRST_NAME, LAST_NAME, OR ID", "INVALID", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
+
+
+
 	}
+
 
 	@Override
 	public void itemStateChanged(ItemEvent e) {
@@ -807,44 +927,76 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 
 	}
 
-	private void clearAddPanel(){
-		txtID_AddPanel.setText(null);
-		txtLastName_AddPanel.setText(null);
-		txtFirstName_AddPanel.setText(null);
-		txtMiddleName_AddPanel.setText(null);
-		txtEmail_AddPanel.setText(null);
-		txtContact_AddPanel.setText(null);
-	}
 	
 	/********************************************************/
 
 	private void addStudent(){
-
+		
 		if (!txtFirstName_AddPanel.getText().isBlank() && 
 			!txtLastName_AddPanel.getText().isBlank() && 
 			isDigit(txtID_AddPanel.getText()) &&
 			!txtEmail_AddPanel.getText().isBlank() &&
 			isDigit(txtContact_AddPanel.getText()))
 			{
-				Object[] info = new Object[] {
-					Integer.parseInt(txtID_AddPanel.getText()),
-					txtLastName_AddPanel.getText(),
-					txtFirstName_AddPanel.getText(),
-					txtMiddleName_AddPanel.getText(),
-					(String)cmbGender_AddPanel.getSelectedItem(),
-					(String)cmbDegree_AddPanel.getSelectedItem(),
-					Integer.parseInt((String)cmbYearLevel_AddPanel.getSelectedItem()),
-					Integer.parseInt((String)cmbBlock_AddPanel.getSelectedItem()),
-					Integer.parseInt(txtDeptHeadID_AddPanel.getText()),
-					(String)cmbStatus_AddPanel.getSelectedItem(),
-					txtEmail_AddPanel.getText(),
-					txtContact_AddPanel.getText()
-				};
-				if(Database.addStudent(info)){
-					JOptionPane.showMessageDialog(this, "STUDENT SUCCESSFULY ADDED", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+				if(Database.searchStudentByID(Integer.parseInt(txtID_AddPanel.getText())).isEmpty()) {
+
+					Object[] info = new Object[] {
+						Integer.parseInt(txtID_AddPanel.getText()),
+						txtLastName_AddPanel.getText(),
+						txtFirstName_AddPanel.getText(),
+						txtMiddleName_AddPanel.getText(),
+						(String)cmbGender_AddPanel.getSelectedItem(),
+						(String)cmbDegree_AddPanel.getSelectedItem(),
+						Integer.parseInt((String)cmbYearLevel_AddPanel.getSelectedItem()),
+						Integer.parseInt((String)cmbBlock_AddPanel.getSelectedItem()),
+						Integer.parseInt(txtDeptHeadID_AddPanel.getText()),
+						(String)cmbStatus_AddPanel.getSelectedItem(),
+						txtEmail_AddPanel.getText(),
+						txtContact_AddPanel.getText()
+					};
+					if(Database.addStudent(info)){
+						JOptionPane.showMessageDialog(this, "STUDENT SUCCESSFULY ADDED", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+					}
+					else {
+						JOptionPane.showMessageDialog(this, "ERROR ADDING STUDENT", "ERROR", JOptionPane.ERROR_MESSAGE);
+					}
 				}
 				else {
-					JOptionPane.showMessageDialog(this, "ERROR ADDING STUDENT", "ERROR", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(this, "STUDENT WITH ID:" + txtID_AddPanel.getText() + "\n ALREADY EXIST", "INVALID INFO", JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+
+		else {
+			JOptionPane.showMessageDialog(this, "STUDENT INFORMATION IS INVALID", "INVALID INFO", JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
+
+	private void editStudent() {
+		if (!txtFirstName_EditPanel.getText().isBlank() && 
+			!txtLastName_EditPanel.getText().isBlank() && 
+			isDigit(txtID_EditPanel.getText()) &&
+			!txtEmail_EditPanel.getText().isBlank() &&
+			isDigit(txtContact_EditPanel.getText()))
+			{
+				Object[] info = new Object[] {
+					txtLastName_EditPanel.getText(),
+					txtFirstName_EditPanel.getText(),
+					txtMiddleName_EditPanel.getText(),
+					(String)cmbGender_EditPanel.getSelectedItem(),
+					(String)cmbDegree_EditPanel.getSelectedItem(),
+					Integer.parseInt((String)cmbYearLevel_EditPanel.getSelectedItem()),
+					Integer.parseInt((String)cmbBlock_EditPanel.getSelectedItem()),
+					Integer.parseInt(txtDeptHeadID_EditPanel.getText()),
+					(String)cmbStatus_EditPanel.getSelectedItem(),
+					txtEmail_EditPanel.getText(),
+					txtContact_EditPanel.getText()
+				};
+
+				if(Database.updateStudent((int)selectedStudentToEdit[0],info)){
+					JOptionPane.showMessageDialog(this, "STUDENT SUCCESSFULY EDITED", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+				}
+				else {
+					JOptionPane.showMessageDialog(this, "ERROR EDITING STUDENT", "ERROR", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 

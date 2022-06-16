@@ -32,6 +32,8 @@ public class Database {
         }
     }
 
+
+    
     /* CONFIRM LOGIN BY SEARCHING ADMIN TABLE */
     public static boolean confirmLogin(String U, char[] P){
         var Pword = "";
@@ -55,6 +57,8 @@ public class Database {
             return false;
         }
     }
+
+
 
     /* GENERATE AN EMAIL BASED ON THE NAME AND ID OF THE STUDENT */
     public static String generateEmail(String surname, String firstname, String middlename, int id){
@@ -96,6 +100,8 @@ public class Database {
         return Email;
     }
 
+
+
     /* FINDS ALL THE ROWS IN A TABLE */
     public static int getRowCount(String table) {
         try{
@@ -116,13 +122,15 @@ public class Database {
         }
     }
 
+/**************************************************** STUDENT ****************************************************/
+
     /* FINDS ALL STUDENTS THAT MATCHES THE SEACRH KEYWORD */
     public static List<Object[]> searchStudent(String keyword){
         List<Object[]> students = new ArrayList<>();
         try{
             if (keyword.isBlank()){
                 Statement stm = ServerConnection.createStatement();
-                String sqlstm = "SELECT * FROM STUDENT;";
+                String sqlstm = "SELECT * FROM STUDENT LIMIT 5000;";
                 ResultSet rs = stm.executeQuery(sqlstm);
                 while(rs.next()){
                     students.add(setStudentInfoArray(rs));
@@ -137,7 +145,7 @@ public class Database {
                                 "%' OR GENDER LIKE '%" + keyword + 
                                 "%' OR DEGREE_PROGRAM LIKE '%" + keyword + 
                                 "%' OR STATUS LIKE '%" + keyword + 
-                                "%' OR SCHOOL_EMAIL LIKE '%" + keyword + "%';";
+                                "%' OR SCHOOL_EMAIL LIKE '%" + keyword + "%' LIMIT 5000;";
                 ResultSet rs = stm.executeQuery(sqlstm);
                 while(rs.next()){
                     students.add(setStudentInfoArray(rs));
@@ -153,12 +161,29 @@ public class Database {
     }
 
 
+    /* DELETES STUDENT */
+    public static boolean deleteStudent(int id) {
+        try{
+            Statement stm = ServerConnection.createStatement();
+            String sqlstm = "DELETE FROM STUDENT WHERE STUDENT_ID = " + Integer.toString(id) + ";"; 
+            
+
+            stm.execute(sqlstm);
+            return true;
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+
     /* SEACH ALL STUDENT USING THE ID */
     public static List<Object[]> searchStudentByID(int id){
         List<Object[]> students = new ArrayList<>();
         try{
             Statement stm = ServerConnection.createStatement();
-            String sqlstm = "SELECT * FROM STUDENT WHERE STUDENT_ID =" + id + ";";
+            String sqlstm = "SELECT * FROM STUDENT WHERE STUDENT_ID =" + id + " LIMIT 5000;";
             ResultSet rs = stm.executeQuery(sqlstm);
             while(rs.next()){
                 students.add(setStudentInfoArray(rs));
@@ -171,6 +196,7 @@ public class Database {
         }
         
     }
+
 
 
     /* GET ALL COURSES */
@@ -190,6 +216,7 @@ public class Database {
             return null;
         }
     }
+
 
 
     /* GETS COURSE HEAD ID */
@@ -212,13 +239,14 @@ public class Database {
     }
 
 
+
     /* ADD STUDENT TO DATABASE */
     public static boolean addStudent(Object[] studentInfo){
         try{
             String sqlstm = "INSERT INTO STUDENT VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement stm = ServerConnection.prepareStatement(sqlstm);
 
-            stm.setInt(1, (int)studentInfo[0]);         //STUDENT_ID
+            stm.setInt(1, (int)studentInfo[0]);         //STUDENT_ID 
             stm.setString(2, (String)studentInfo[1]);   //LAST_NAME
             stm.setString(3, (String)studentInfo[2]);   //FIRST_NAME
             stm.setString(4, (String)studentInfo[3]);   //MIDDLE_NAME
@@ -241,6 +269,7 @@ public class Database {
     }
 
 
+
     /* GET ALL STUDENT INFO BY ID */
     public static Object[] getStudentInfo(int id){
         try{
@@ -259,6 +288,7 @@ public class Database {
             return null;
         }
     }
+
 
     
     /* UPDATE STUDENT EMAILS AND DEPARTMENT HEAD ID */
@@ -280,6 +310,35 @@ public class Database {
         }
     }
 
+    public static boolean updateStudent(int id, Object[] info) {
+        try{
+            String sqlstm = "UPDATE STUDENT SET " +
+                            "LAST_NAME = '" + (String)info[0] + "', " +
+                            "FIRST_NAME = '" + (String)info[1] + "', " +
+                            "MIDDLE_NAME = '" + (String)info[2] + "', " +
+                            "GENDER = '" + (String)info[3] + "', " +
+                            "DEGREE_PROGRAM = '" + (String)info[4] + "', " +
+                            "YEAR_LEVEL = " + info[5]  + ", " +
+                            "BLOCK_NUMBER = " + info[6]  + ", " +
+                            "DEPARTMENT_HEAD_ID = " + info[7]  + ", " +
+                            "STATUS = '" + (String)info[8] + "', " +
+                            "SCHOOL_EMAIL = '" + (String)info[9] + "', " +
+                            "CONTACT_NUMBER = '" + (String)info[10] + "' " +
+                            "WHERE STUDENT_ID = " + id + " ;";
+                            
+            Statement stm = ServerConnection.createStatement();
+            stm.execute(sqlstm);
+            return true;
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    /**************************************************** FACULTY ****************************************************/
+
+
 
     /* GET ALL FACULTY INFO BY ID*/
     public static Object[] getFacultyInfo(int id){
@@ -300,7 +359,6 @@ public class Database {
             return null;
         }
     }
-
 
 
 
