@@ -4,19 +4,14 @@ package SMSApp;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Panel;
 import java.awt.RenderingHints;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import java.awt.BorderLayout;
 import java.awt.Color;
 
 import javax.swing.border.LineBorder;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.border.MatteBorder;
 
@@ -35,7 +30,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.net.URL;
 
 public class LoginWindow extends JFrame implements ActionListener{
 
@@ -89,7 +83,8 @@ public class LoginWindow extends JFrame implements ActionListener{
 	            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 	                    RenderingHints.VALUE_ANTIALIAS_ON);
 	            GradientPaint gp = new GradientPaint(0, 0,
-	                    Color.decode("#3a1c71"), 0, getHeight(),
+	                    Color.decode("#3a1c71"), 
+						0, getHeight(),
 	                    Color.decode("#ffaf7b"));
 	            g2d.setPaint(gp);
 	            g2d.fillRect(0, 0, getWidth(), getHeight()); 

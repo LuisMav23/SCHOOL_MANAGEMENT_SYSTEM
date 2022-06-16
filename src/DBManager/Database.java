@@ -9,10 +9,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
-import SMSApp.StudentPanel;
-
 public class Database {
 	private static Connection ServerConnection = null;
 	
@@ -70,19 +66,30 @@ public class Database {
                 Email += fnameArr[i + 1];
             }
         }
-
-        char[] mnameArr = middlename.toLowerCase().toCharArray();
-        Email += mnameArr[0];
-        for (int i = 0; i < middlename.length(); i++){
-            char c = mnameArr[i];
-            if (c == ' ') {
-                Email += mnameArr[i + 1];
+        if (!middlename.isBlank()) {
+            
+            char[] mnameArr = middlename.toLowerCase().toCharArray();
+            Email += mnameArr[0];
+            for (int i = 0; i < middlename.length(); i++){
+                char c = mnameArr[i];
+                if (c == ' ') {
+                    Email += mnameArr[i + 1];
+                }
             }
         }
 
+        char[] snameArr = surname.toCharArray();
+        StringBuffer stringBuffer = new StringBuffer();  
+        for (int i = 0; i < snameArr.length; i++) {  
+            if ((snameArr[i] != ' ') && (snameArr[i] != '\t')) {  
+                stringBuffer.append(snameArr[i]);  
+            }  
+        }  
+        String surNew = stringBuffer.toString();  
+
         String idChar = Integer.toString(id);
 
-        Email += surname.toLowerCase() + idChar + "@plm.edu.ph";
+        Email += surNew + idChar + "@plm.edu.ph";
 
         return Email;
     }
@@ -122,7 +129,11 @@ public class Database {
                 Statement stm = ServerConnection.createStatement();
                 String sqlstm = "SELECT * FROM STUDENT WHERE LAST_NAME LIKE '%" + keyword + 
                                 "%' OR FIRST_NAME LIKE '%" + keyword + 
-                                "%' OR MIDDLE_NAME LIKE '%" + keyword + "%';";
+                                "%' OR MIDDLE_NAME LIKE '%" + keyword + 
+                                "%' OR GENDER LIKE '%" + keyword + 
+                                "%' OR DEGREE_PROGRAM LIKE '%" + keyword + 
+                                "%' OR STATUS LIKE '%" + keyword + 
+                                "%' OR SCHOOL_EMAIL LIKE '%" + keyword + "%';";
                 ResultSet rs = stm.executeQuery(sqlstm);
                 while(rs.next()){
                     students.add(setStudentInfoArray(rs));
@@ -155,8 +166,43 @@ public class Database {
         
     }
 
+    public static List<String> getAllCourse(){
+        List<String> course = new ArrayList<>();
+        try{
+            Statement stm = ServerConnection.createStatement();
+            String sqlstm = "SELECT DEGREE_PROGRAM FROM COURSE;";
+            ResultSet rs = stm.executeQuery(sqlstm);
+            while(rs.next()){
+                course.add(rs.getString(1));
+            }
+            return course;
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
 
-    public static void addStudent(Object[] studentInfo){
+    public static int getCourseHeadID(String course){
+        try{
+            Statement stm = ServerConnection.createStatement();
+            String sqlstm = "SELECT DEPARTMENT_HEAD_ID FROM COURSE WHERE DEGREE_PROGRAM = '" + course + "';";
+            ResultSet rs = stm.executeQuery(sqlstm);
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+            else {
+                return 0;
+            }
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+            return 0;
+        }
+    }
+
+
+    public static boolean addStudent(Object[] studentInfo){
         try{
             String sqlstm = "INSERT INTO STUDENT VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement stm = ServerConnection.prepareStatement(sqlstm);
@@ -175,9 +221,11 @@ public class Database {
             stm.setString(12, (String)studentInfo[11]); //CONTACT_NUMBER
 
             stm.execute();
+            return true;
         }
         catch (SQLException ex){
             ex.printStackTrace();
+            return false;
         }
     }
 

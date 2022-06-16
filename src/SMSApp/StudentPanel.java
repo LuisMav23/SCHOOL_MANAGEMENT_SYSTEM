@@ -26,6 +26,8 @@ import javax.swing.JTable;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JTabbedPane;
+import javax.swing.border.MatteBorder;
 
 public class StudentPanel extends JPanel implements ActionListener, ItemListener	{
 
@@ -65,38 +67,61 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 	private JButton btnSearch;
 	private JButton btnSearchById;
 	private JLabel lblNewLabel;
+	JScrollPane scrollPane;
 	private JTable table;
 	private JComboBox cmbSearchOption;
-	private JButton btnAdd;
-	private JButton btnRemove;
-	private JButton btnEdit;
-	private JButton btnConfirm;
-	private JTextField txtID;
+
+
+	private JButton btnClear_AddPanel;
+	private JButton btnRemove_RemovePanel;
+	private JButton btnConfirm_AddPanel;
+	private JTextField txtID_AddPanel;
+	private JTextField txtLastName_AddPanel;
+	private JTextField txtFirstName_AddPanel;
+	private JTextField txtMiddleName_AddPanel;
+	private JTextField txtDeptHeadID_AddPanel;
+	private JTextField txtEmail_AddPanel;
+	private JTextField txtContact_AddPanel;
+	private JTextField txtLastName_RemovePanel;
+	private JTextField txtFirstName_RemovePanel;
+	private JTextField txtMiddleName_RemovePanel;
+	private JTextField txtDeptHeadID_RemovePanel;
+	private JTextField txtEmail_RemovePanel;
+	private JTextField txtContact_RemovePanel;
+	private JTextField txtStatus_RemovePanel;
+	private JTextField txtGender_RemovePanel;
+	private JTextField txtDegree_RemovePanel;
+	private JTextField txtYearLevel_RemovePanel;
+	private JTextField txtBlock_RemovePanel;
+	private JTextField txtID_EditPanel;
+	private JTextField txtLastName_EditPanel;
+	private JTextField txtFirstName_EditPanel;
+	private JTextField txtMiddleName_EditPanel;
+	private JTextField txtDeptHeadID_EditPanel;
+	private JTextField txtContact_EditPanel;
+	private JTextField txtEmail_EditPanel;
+	private JTabbedPane tabbedPane;
+	private JPanel AddPanel;
 	private JLabel lblID;
-	private JTextField txtLastName;
-	private JTextField txtFirstName;
-	private JTextField txtMiddleName;
-	private JLabel lblNewLabel_1;
-	private JLabel lblNewLabel_2;
-	private JLabel lblNewLabel_3;
-	private JLabel lblNewLabel_4;
-	private JComboBox cmbGender;
-	private JLabel lblNewLabel_5;
-	private JComboBox cmbDegreeProgram;
-	private JTextField txtDeptHeadID;
-	private JLabel lblDeptheadid;
-	private JLabel lblYearlevel;
-	private JLabel lblBlocknumber;
-	private JComboBox cmbYearLevel;
-	private JComboBox cmbBlockNumber;
-	private JLabel lblStatus;
-	private JComboBox cmbStatus;
-	private JTextField txtSchoolEmail;
-	private JTextField txtContactNumber;
-	private JLabel lblSchoolemail;
-	private JLabel lblContactnumber;
-	private JLabel lblAction;
-	private JSeparator separator;
+	private JComboBox cmbGender_AddPanel;
+	private JComboBox cmbDegree_AddPanel;
+	private JComboBox cmbYearLevel_AddPanel;
+	private JComboBox cmbBlock_AddPanel;
+	private JComboBox cmbStatus_AddPanel;
+	private JButton btnGenerate_AddPanel;
+	private JPanel RemovePanel;
+	private JTextField txtID_RemovePanel;
+	private JButton btnFind_RemovePanel;
+	private JPanel EditPanel;
+	private JComboBox cmbDegree_EditPanel;
+	private JComboBox cmbGender_EditPanel;
+	private JComboBox cmbYearLevel_EditPanel;
+	private JComboBox cmbBlock_EditPanel;
+	private JComboBox cmbStatus_EditPanel;
+	private JButton btnGenerate_AddPanel_1;
+	private JButton btnConfirm_EditPanel;
+	private JButton btnFind_EditPanel;
+	private JButton btnRefresh;
 
 	/**
 	 * Create the panel.
@@ -121,7 +146,7 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 		
 		btnSearch = new JButton("Search");
 		btnSearch.setBackground(new Color(255, 255, 255));
-		btnSearch.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
+		btnSearch.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		btnSearch.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnSearch.setBounds(1249, 15, 95, 32);
 		btnSearch.addActionListener(this);
@@ -129,13 +154,13 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 		
 		btnSearchById = new JButton("Search by ID");
 		btnSearchById.setBackground(new Color(255, 255, 255));
-		btnSearchById.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
+		btnSearchById.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		btnSearchById.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnSearchById.setBounds(1354, 15, 125, 32);
 		btnSearchById.addActionListener(this);
 		MainStudentPanel.add(btnSearchById);
 		
-		JScrollPane scrollPane = new JScrollPane();
+		scrollPane = new JScrollPane();
 		scrollPane.setBounds(574, 61, 905, 587);
 		MainStudentPanel.add(scrollPane);
 		
@@ -152,195 +177,520 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 		cmbSearchOption = new JComboBox();
 		cmbSearchOption.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		cmbSearchOption.setModel(new DefaultComboBoxModel(new String[] {"Personal Info", "Course Info", "Contact Info"}));
-		cmbSearchOption.setBounds(574, 18, 221, 29);
+		cmbSearchOption.setBounds(650, 16, 145, 29);
 		cmbSearchOption.addItemListener(this);
 		MainStudentPanel.add(cmbSearchOption);
-
-		btnAdd = new JButton("ADD");
-		btnAdd.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		btnAdd.setBackground(new Color(255, 250, 250));
-		btnAdd.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnAdd.setBounds(10, 599, 115, 32);
-		btnAdd.addActionListener(this);
-		MainStudentPanel.add(btnAdd);
 		
-		btnRemove = new JButton("REMOVE");
-		btnRemove.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnRemove.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		btnRemove.setBackground(new Color(255, 250, 250));
-		btnRemove.setBounds(135, 599, 115, 32);
-		btnRemove.addActionListener(this);
-		MainStudentPanel.add(btnRemove);
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setBackground(new Color(255, 255, 255));
+		tabbedPane.setFont(new Font("Tahoma", Font.BOLD, 15));
+		tabbedPane.setBounds(10, 95, 554, 553);
+		MainStudentPanel.add(tabbedPane);
 		
-		btnEdit = new JButton("EDIT");
-		btnEdit.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnEdit.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		btnEdit.setBackground(new Color(255, 250, 250));
-		btnEdit.setBounds(260, 599, 115, 32);
-		MainStudentPanel.add(btnEdit);
+		AddPanel = new JPanel();
+		AddPanel.setLayout(null);
+		AddPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
+		tabbedPane.addTab("ADD", null, AddPanel, null);
 		
-		btnConfirm = new JButton("CONFIRM");
-		btnConfirm.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnConfirm.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		btnConfirm.setBackground(new Color(255, 250, 250));
-		btnConfirm.setBounds(385, 599, 179, 32);
-		MainStudentPanel.add(btnConfirm);
-		
-		JPanel InfoPanel = new JPanel();
-		InfoPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		InfoPanel.setBounds(10, 95, 554, 475);
-		MainStudentPanel.add(InfoPanel);
-		InfoPanel.setLayout(null);
-		
-		txtID = new JTextField();
-		txtID.setBounds(37, 95, 109, 28);
-		InfoPanel.add(txtID);
-		txtID.setColumns(10);
+		txtID_AddPanel = new JTextField();
+		txtID_AddPanel.setColumns(10);
+		txtID_AddPanel.setBounds(37, 95, 109, 28);
+		AddPanel.add(txtID_AddPanel);
 		
 		lblID = new JLabel("ID:");
 		lblID.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblID.setBounds(10, 97, 31, 19);
-		InfoPanel.add(lblID);
+		AddPanel.add(lblID);
 		
-		txtLastName = new JTextField();
-		txtLastName.setBounds(10, 141, 159, 33);
-		InfoPanel.add(txtLastName);
-		txtLastName.setColumns(10);
+		txtLastName_AddPanel = new JTextField();
+		txtLastName_AddPanel.setColumns(10);
+		txtLastName_AddPanel.setBounds(10, 141, 159, 33);
+		AddPanel.add(txtLastName_AddPanel);
 		
-		txtFirstName = new JTextField();
-		txtFirstName.setColumns(10);
-		txtFirstName.setBounds(172, 141, 199, 33);
-		InfoPanel.add(txtFirstName);
+		txtFirstName_AddPanel = new JTextField();
+		txtFirstName_AddPanel.setColumns(10);
+		txtFirstName_AddPanel.setBounds(172, 141, 199, 33);
+		AddPanel.add(txtFirstName_AddPanel);
 		
-		txtMiddleName = new JTextField();
-		txtMiddleName.setColumns(10);
-		txtMiddleName.setBounds(375, 141, 165, 33);
-		InfoPanel.add(txtMiddleName);
+		txtMiddleName_AddPanel = new JTextField();
+		txtMiddleName_AddPanel.setColumns(10);
+		txtMiddleName_AddPanel.setBounds(375, 141, 165, 33);
+		AddPanel.add(txtMiddleName_AddPanel);
 		
-		lblNewLabel_1 = new JLabel("LAST_NAME");
+		JLabel lblNewLabel_1 = new JLabel("LAST_NAME");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblNewLabel_1.setBounds(50, 185, 90, 19);
-		InfoPanel.add(lblNewLabel_1);
+		AddPanel.add(lblNewLabel_1);
 		
-		lblNewLabel_2 = new JLabel("FIRST_NAME");
+		JLabel lblNewLabel_2 = new JLabel("FIRST_NAME");
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblNewLabel_2.setBounds(226, 185, 90, 19);
-		InfoPanel.add(lblNewLabel_2);
+		AddPanel.add(lblNewLabel_2);
 		
-		lblNewLabel_3 = new JLabel("MIDDLE_NAME");
+		JLabel lblNewLabel_3 = new JLabel("MIDDLE_NAME");
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblNewLabel_3.setBounds(414, 184, 109, 19);
-		InfoPanel.add(lblNewLabel_3);
+		AddPanel.add(lblNewLabel_3);
 		
-		lblNewLabel_4 = new JLabel("GENDER:");
+		JLabel lblNewLabel_4 = new JLabel("GENDER:");
 		lblNewLabel_4.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblNewLabel_4.setBounds(10, 234, 64, 19);
-		InfoPanel.add(lblNewLabel_4);
+		AddPanel.add(lblNewLabel_4);
 		
-		cmbGender = new JComboBox();
-		cmbGender.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		cmbGender.setModel(new DefaultComboBoxModel(new String[] {"M", "F"}));
-		cmbGender.setBounds(84, 234, 109, 22);
-		InfoPanel.add(cmbGender);
+		cmbGender_AddPanel = new JComboBox();
+		cmbGender_AddPanel.setModel(new DefaultComboBoxModel(new String[] {"M", "F"}));
+		cmbGender_AddPanel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		cmbGender_AddPanel.setBounds(84, 234, 109, 22);
+		AddPanel.add(cmbGender_AddPanel);
 		
-		lblNewLabel_5 = new JLabel("DEGREE_PROGRAM:");
+		JLabel lblNewLabel_5 = new JLabel("DEGREE_PROGRAM:");
 		lblNewLabel_5.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblNewLabel_5.setBounds(203, 234, 139, 19);
-		InfoPanel.add(lblNewLabel_5);
+		AddPanel.add(lblNewLabel_5);
 		
-		cmbDegreeProgram = new JComboBox();
-		cmbDegreeProgram.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		cmbDegreeProgram.setBounds(345, 234, 195, 22);
-		InfoPanel.add(cmbDegreeProgram);
+		cmbDegree_AddPanel = new JComboBox();
+		cmbDegree_AddPanel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		cmbDegree_AddPanel.setBounds(345, 234, 195, 22);
+		cmbDegree_AddPanel.addItemListener(this);
+		AddPanel.add(cmbDegree_AddPanel);
 		
-		txtDeptHeadID = new JTextField();
-		txtDeptHeadID.setEditable(false);
-		txtDeptHeadID.setColumns(10);
-		txtDeptHeadID.setBounds(132, 289, 159, 28);
-		InfoPanel.add(txtDeptHeadID);
+		txtDeptHeadID_AddPanel = new JTextField();
+		txtDeptHeadID_AddPanel.setEditable(false);
+		txtDeptHeadID_AddPanel.setColumns(10);
+		txtDeptHeadID_AddPanel.setBounds(132, 289, 159, 28);
+		AddPanel.add(txtDeptHeadID_AddPanel);
 		
-		lblDeptheadid = new JLabel("DEPT_HEAD_ID:");
+		JLabel lblDeptheadid = new JLabel("DEPT_HEAD_ID:");
 		lblDeptheadid.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblDeptheadid.setBounds(10, 294, 112, 19);
-		InfoPanel.add(lblDeptheadid);
+		AddPanel.add(lblDeptheadid);
 		
-		lblYearlevel = new JLabel("YEAR_LEVEL:");
+		JLabel lblYearlevel = new JLabel("YEAR_LEVEL:");
 		lblYearlevel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblYearlevel.setBounds(336, 289, 90, 19);
-		InfoPanel.add(lblYearlevel);
+		AddPanel.add(lblYearlevel);
 		
-		lblBlocknumber = new JLabel("BLOCK_NUMBER:");
+		JLabel lblBlocknumber = new JLabel("BLOCK_NUMBER:");
 		lblBlocknumber.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblBlocknumber.setBounds(309, 334, 117, 19);
-		InfoPanel.add(lblBlocknumber);
+		AddPanel.add(lblBlocknumber);
 		
-		cmbYearLevel = new JComboBox();
-		cmbYearLevel.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5"}));
-		cmbYearLevel.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		cmbYearLevel.setBounds(431, 286, 109, 22);
-		InfoPanel.add(cmbYearLevel);
+		cmbYearLevel_AddPanel = new JComboBox();
+		cmbYearLevel_AddPanel.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5"}));
+		cmbYearLevel_AddPanel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		cmbYearLevel_AddPanel.setBounds(431, 286, 109, 22);
+		AddPanel.add(cmbYearLevel_AddPanel);
 		
-		cmbBlockNumber = new JComboBox();
-		cmbBlockNumber.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3"}));
-		cmbBlockNumber.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		cmbBlockNumber.setBounds(431, 331, 109, 22);
-		InfoPanel.add(cmbBlockNumber);
+		cmbBlock_AddPanel = new JComboBox();
+		cmbBlock_AddPanel.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3"}));
+		cmbBlock_AddPanel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		cmbBlock_AddPanel.setBounds(431, 331, 109, 22);
+		AddPanel.add(cmbBlock_AddPanel);
 		
-		lblStatus = new JLabel("STATUS:");
+		JLabel lblStatus = new JLabel("STATUS:");
 		lblStatus.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblStatus.setBounds(58, 335, 64, 19);
-		InfoPanel.add(lblStatus);
+		AddPanel.add(lblStatus);
 		
-		cmbStatus = new JComboBox();
-		cmbStatus.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		cmbStatus.setModel(new DefaultComboBoxModel(new String[] {"REGULAR", "IRREGULAR"}));
-		cmbStatus.setBounds(132, 335, 159, 22);
-		InfoPanel.add(cmbStatus);
+		cmbStatus_AddPanel = new JComboBox();
+		cmbStatus_AddPanel.setModel(new DefaultComboBoxModel(new String[] {"REGULAR", "IRREGULAR"}));
+		cmbStatus_AddPanel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		cmbStatus_AddPanel.setBounds(132, 335, 159, 22);
+		AddPanel.add(cmbStatus_AddPanel);
 		
-		txtSchoolEmail = new JTextField();
-		txtSchoolEmail.setEditable(false);
-		txtSchoolEmail.setColumns(10);
-		txtSchoolEmail.setBounds(86, 384, 240, 28);
-		InfoPanel.add(txtSchoolEmail);
+		txtEmail_AddPanel = new JTextField();
+		txtEmail_AddPanel.setEditable(false);
+		txtEmail_AddPanel.setColumns(10);
+		txtEmail_AddPanel.setBounds(86, 384, 240, 28);
+		AddPanel.add(txtEmail_AddPanel);
 		
-		txtContactNumber = new JTextField();
-		txtContactNumber.setColumns(10);
-		txtContactNumber.setBounds(336, 384, 204, 28);
-		InfoPanel.add(txtContactNumber);
+		txtContact_AddPanel = new JTextField();
+		txtContact_AddPanel.setColumns(10);
+		txtContact_AddPanel.setBounds(336, 384, 204, 28);
+		AddPanel.add(txtContact_AddPanel);
 		
-		lblSchoolemail = new JLabel("SCHOOL_EMAIL");
+		JLabel lblSchoolemail = new JLabel("SCHOOL_EMAIL");
 		lblSchoolemail.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblSchoolemail.setBounds(149, 422, 112, 19);
-		InfoPanel.add(lblSchoolemail);
+		AddPanel.add(lblSchoolemail);
 		
-		lblContactnumber = new JLabel("CONTACT_NUMBER");
+		JLabel lblContactnumber = new JLabel("CONTACT_NUMBER");
 		lblContactnumber.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblContactnumber.setBounds(377, 422, 148, 19);
-		InfoPanel.add(lblContactnumber);
+		AddPanel.add(lblContactnumber);
 		
-		lblAction = new JLabel("ADD");
-		lblAction.setFont(new Font("Monospaced", Font.BOLD, 50));
+		JLabel lblAction = new JLabel("ADD STUDENT");
 		lblAction.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAction.setFont(new Font("Monospaced", Font.BOLD, 50));
 		lblAction.setBounds(10, 10, 530, 66);
-		InfoPanel.add(lblAction);
+		AddPanel.add(lblAction);
 		
-		separator = new JSeparator();
+		JSeparator separator = new JSeparator();
 		separator.setBounds(10, 81, 534, 4);
-		InfoPanel.add(separator);
+		AddPanel.add(separator);
 		
-		JButton btnG = new JButton("Generate");
-		btnG.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btnG.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		btnG.setBackground(new Color(255, 250, 250));
-		btnG.setBounds(10, 384, 73, 28);
-		InfoPanel.add(btnG);
+		btnGenerate_AddPanel = new JButton("Generate");
+		btnGenerate_AddPanel.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		btnGenerate_AddPanel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		btnGenerate_AddPanel.setBackground(new Color(255, 250, 250));
+		btnGenerate_AddPanel.setBounds(10, 384, 73, 28);
+		btnGenerate_AddPanel.addActionListener(this);
+		AddPanel.add(btnGenerate_AddPanel);
+		
+		btnClear_AddPanel = new JButton("CLEAR");
+		btnClear_AddPanel.setBounds(25, 468, 115, 32);
+		AddPanel.add(btnClear_AddPanel);
+		btnClear_AddPanel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		btnClear_AddPanel.setBackground(new Color(255, 250, 250));
+		btnClear_AddPanel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+				
+		btnConfirm_AddPanel = new JButton("CONFIRM");
+		btnConfirm_AddPanel.setBounds(345, 468, 179, 32);
+		AddPanel.add(btnConfirm_AddPanel);
+		btnConfirm_AddPanel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnConfirm_AddPanel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		btnConfirm_AddPanel.setBackground(new Color(255, 250, 250));
+		btnConfirm_AddPanel.addActionListener(this);
+				
+		RemovePanel = new JPanel();
+		tabbedPane.addTab("REMOVE", null, RemovePanel, null);
+				RemovePanel.setLayout(null);
+				
+		btnRemove_RemovePanel = new JButton("REMOVE");
+		btnRemove_RemovePanel.setBounds(184, 463, 170, 32);
+		RemovePanel.add(btnRemove_RemovePanel);
+		btnRemove_RemovePanel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnRemove_RemovePanel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		btnRemove_RemovePanel.setBackground(new Color(255, 250, 250));
+				
+		txtID_RemovePanel = new JTextField();
+		txtID_RemovePanel.setColumns(10);
+		txtID_RemovePanel.setBounds(37, 95, 109, 28);
+		RemovePanel.add(txtID_RemovePanel);
+				
+		JLabel lblID_1 = new JLabel("ID:");
+		lblID_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblID_1.setBounds(10, 97, 31, 19);
+		RemovePanel.add(lblID_1);
+				
+		txtLastName_RemovePanel = new JTextField();
+		txtLastName_RemovePanel.setEditable(false);
+		txtLastName_RemovePanel.setColumns(10);
+		txtLastName_RemovePanel.setBounds(10, 141, 159, 33);
+		RemovePanel.add(txtLastName_RemovePanel);
+				
+		txtFirstName_RemovePanel = new JTextField();
+		txtFirstName_RemovePanel.setEditable(false);
+		txtFirstName_RemovePanel.setColumns(10);
+		txtFirstName_RemovePanel.setBounds(172, 141, 199, 33);
+		RemovePanel.add(txtFirstName_RemovePanel);
+				
+		txtMiddleName_RemovePanel = new JTextField();
+		txtMiddleName_RemovePanel.setEditable(false);
+		txtMiddleName_RemovePanel.setColumns(10);
+		txtMiddleName_RemovePanel.setBounds(375, 141, 165, 33);
+		RemovePanel.add(txtMiddleName_RemovePanel);
+				
+		JLabel lblNewLabel_1_1 = new JLabel("LAST_NAME");
+		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel_1_1.setBounds(50, 185, 90, 19);
+		RemovePanel.add(lblNewLabel_1_1);
+				
+		JLabel lblNewLabel_2_1 = new JLabel("FIRST_NAME");
+		lblNewLabel_2_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel_2_1.setBounds(226, 185, 90, 19);
+		RemovePanel.add(lblNewLabel_2_1);
+				
+		JLabel lblNewLabel_3_1 = new JLabel("MIDDLE_NAME");
+		lblNewLabel_3_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel_3_1.setBounds(414, 184, 109, 19);
+		RemovePanel.add(lblNewLabel_3_1);
+				
+		JLabel lblAction_1 = new JLabel("REMOVE STUDENT");
+		lblAction_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAction_1.setFont(new Font("Monospaced", Font.BOLD, 50));
+		lblAction_1.setBounds(10, 10, 530, 66);
+		RemovePanel.add(lblAction_1);
+				
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setBounds(10, 81, 534, 4);
+		RemovePanel.add(separator_1);
+				
+		JLabel lblNewLabel_5_1 = new JLabel("DEGREE_PROGRAM:");
+		lblNewLabel_5_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel_5_1.setBounds(203, 234, 139, 19);
+		RemovePanel.add(lblNewLabel_5_1);
+				
+		JLabel lblNewLabel_4_1 = new JLabel("GENDER:");
+		lblNewLabel_4_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel_4_1.setBounds(10, 234, 64, 19);
+		RemovePanel.add(lblNewLabel_4_1);
+				
+		JLabel lblDeptheadid_1 = new JLabel("DEPT_HEAD_ID:");
+		lblDeptheadid_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblDeptheadid_1.setBounds(10, 294, 112, 19);
+		RemovePanel.add(lblDeptheadid_1);
+				
+		txtDeptHeadID_RemovePanel = new JTextField();
+		txtDeptHeadID_RemovePanel.setEditable(false);
+		txtDeptHeadID_RemovePanel.setColumns(10);
+		txtDeptHeadID_RemovePanel.setBounds(132, 289, 159, 28);
+		RemovePanel.add(txtDeptHeadID_RemovePanel);
+				
+		JLabel lblStatus_1 = new JLabel("STATUS:");
+		lblStatus_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblStatus_1.setBounds(58, 335, 64, 19);
+		RemovePanel.add(lblStatus_1);
+				
+		txtEmail_RemovePanel = new JTextField();
+		txtEmail_RemovePanel.setEditable(false);
+		txtEmail_RemovePanel.setColumns(10);
+		txtEmail_RemovePanel.setBounds(10, 384, 294, 28);
+		RemovePanel.add(txtEmail_RemovePanel);
+				
+		txtContact_RemovePanel = new JTextField();
+		txtContact_RemovePanel.setEditable(false);
+		txtContact_RemovePanel.setColumns(10);
+		txtContact_RemovePanel.setBounds(314, 384, 226, 28);
+		RemovePanel.add(txtContact_RemovePanel);
+				
+		JLabel lblContactnumber_1 = new JLabel("CONTACT_NUMBER");
+		lblContactnumber_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblContactnumber_1.setBounds(363, 422, 148, 19);
+		RemovePanel.add(lblContactnumber_1);
+				
+		JLabel lblSchoolemail_1 = new JLabel("SCHOOL_EMAIL");
+		lblSchoolemail_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblSchoolemail_1.setBounds(108, 422, 112, 19);
+		RemovePanel.add(lblSchoolemail_1);
+				
+		JLabel lblYearlevel_1 = new JLabel("YEAR_LEVEL:");
+		lblYearlevel_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblYearlevel_1.setBounds(336, 289, 90, 19);
+		RemovePanel.add(lblYearlevel_1);
+				
+		JLabel lblBlocknumber_1 = new JLabel("BLOCK_NUMBER:");
+		lblBlocknumber_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblBlocknumber_1.setBounds(309, 334, 117, 19);
+		RemovePanel.add(lblBlocknumber_1);
+				
+		txtStatus_RemovePanel = new JTextField();
+		txtStatus_RemovePanel.setEditable(false);
+		txtStatus_RemovePanel.setColumns(10);
+		txtStatus_RemovePanel.setBounds(132, 327, 159, 28);
+		RemovePanel.add(txtStatus_RemovePanel);
+				
+		txtGender_RemovePanel = new JTextField();
+		txtGender_RemovePanel.setEditable(false);
+		txtGender_RemovePanel.setColumns(10);
+		txtGender_RemovePanel.setBounds(74, 225, 119, 28);
+		RemovePanel.add(txtGender_RemovePanel);
+				
+		txtDegree_RemovePanel = new JTextField();
+		txtDegree_RemovePanel.setEditable(false);
+		txtDegree_RemovePanel.setColumns(10);
+		txtDegree_RemovePanel.setBounds(341, 225, 199, 28);
+		RemovePanel.add(txtDegree_RemovePanel);
+				
+		txtYearLevel_RemovePanel = new JTextField();
+		txtYearLevel_RemovePanel.setEditable(false);
+		txtYearLevel_RemovePanel.setColumns(10);
+		txtYearLevel_RemovePanel.setBounds(431, 280, 109, 28);
+		RemovePanel.add(txtYearLevel_RemovePanel);
+				
+		txtBlock_RemovePanel = new JTextField();
+		txtBlock_RemovePanel.setEditable(false);
+		txtBlock_RemovePanel.setColumns(10);
+		txtBlock_RemovePanel.setBounds(431, 326, 109, 28);
+		RemovePanel.add(txtBlock_RemovePanel);
+				
+		btnFind_RemovePanel = new JButton("FIND");
+		btnFind_RemovePanel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnFind_RemovePanel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		btnFind_RemovePanel.setBackground(new Color(255, 250, 250));
+		btnFind_RemovePanel.setBounds(156, 95, 90, 28);
+		RemovePanel.add(btnFind_RemovePanel);
+				
+		EditPanel = new JPanel();
+		tabbedPane.addTab("EDIT", null, EditPanel, null);
+		EditPanel.setLayout(null);
+				
+		txtID_EditPanel = new JTextField();
+		txtID_EditPanel.setColumns(10);
+		txtID_EditPanel.setBounds(37, 95, 109, 28);
+		EditPanel.add(txtID_EditPanel);
+				
+		JLabel lblID_2 = new JLabel("ID:");
+		lblID_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblID_2.setBounds(10, 97, 31, 19);
+		EditPanel.add(lblID_2);
+				
+		txtLastName_EditPanel = new JTextField();
+		txtLastName_EditPanel.setColumns(10);
+		txtLastName_EditPanel.setBounds(10, 141, 159, 33);
+		EditPanel.add(txtLastName_EditPanel);
+				
+		txtFirstName_EditPanel = new JTextField();
+		txtFirstName_EditPanel.setColumns(10);
+		txtFirstName_EditPanel.setBounds(172, 141, 199, 33);
+		EditPanel.add(txtFirstName_EditPanel);
+		
+		JSeparator separator_2 = new JSeparator();
+		separator_2.setBounds(10, 81, 534, 4);
+		EditPanel.add(separator_2);
+				
+		JLabel lblEditStudent = new JLabel("EDIT STUDENT");
+		lblEditStudent.setHorizontalAlignment(SwingConstants.CENTER);
+		lblEditStudent.setFont(new Font("Monospaced", Font.BOLD, 50));
+		lblEditStudent.setBounds(10, 10, 530, 66);
+		EditPanel.add(lblEditStudent);
+				
+		cmbDegree_EditPanel = new JComboBox();
+		cmbDegree_EditPanel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		cmbDegree_EditPanel.setBounds(345, 234, 195, 22);
+		cmbDegree_EditPanel.addItemListener(this);
+		EditPanel.add(cmbDegree_EditPanel);
+				
+		JLabel lblNewLabel_3_2 = new JLabel("MIDDLE_NAME");
+		lblNewLabel_3_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel_3_2.setBounds(414, 184, 109, 19);
+		EditPanel.add(lblNewLabel_3_2);
+				
+		txtMiddleName_EditPanel = new JTextField();
+		txtMiddleName_EditPanel.setColumns(10);
+		txtMiddleName_EditPanel.setBounds(375, 141, 165, 33);
+		EditPanel.add(txtMiddleName_EditPanel);
+				
+		JLabel lblNewLabel_2_2 = new JLabel("FIRST_NAME");
+		lblNewLabel_2_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel_2_2.setBounds(226, 185, 90, 19);
+		EditPanel.add(lblNewLabel_2_2);
+				
+		JLabel lblNewLabel_1_2 = new JLabel("LAST_NAME");
+		lblNewLabel_1_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel_1_2.setBounds(50, 185, 90, 19);
+		EditPanel.add(lblNewLabel_1_2);
+				
+		JLabel lblNewLabel_5_2 = new JLabel("DEGREE_PROGRAM:");
+		lblNewLabel_5_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel_5_2.setBounds(203, 234, 139, 19);
+		EditPanel.add(lblNewLabel_5_2);
+				
+		cmbGender_EditPanel = new JComboBox();
+		cmbGender_EditPanel.setModel(new DefaultComboBoxModel(new String[] {"M", "F"}));
+		cmbGender_EditPanel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		cmbGender_EditPanel.setBounds(84, 234, 109, 22);
+		EditPanel.add(cmbGender_EditPanel);
+		
+		JLabel lblNewLabel_4_2 = new JLabel("GENDER:");
+		lblNewLabel_4_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel_4_2.setBounds(10, 234, 64, 19);
+		EditPanel.add(lblNewLabel_4_2);
+				
+		JLabel lblDeptheadid_2 = new JLabel("DEPT_HEAD_ID:");
+		lblDeptheadid_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblDeptheadid_2.setBounds(10, 294, 112, 19);
+		EditPanel.add(lblDeptheadid_2);
+				
+		txtDeptHeadID_EditPanel = new JTextField();
+		txtDeptHeadID_EditPanel.setEditable(false);
+		txtDeptHeadID_EditPanel.setColumns(10);
+		txtDeptHeadID_EditPanel.setBounds(132, 289, 159, 28);
+		EditPanel.add(txtDeptHeadID_EditPanel);
+				
+		cmbYearLevel_EditPanel = new JComboBox();
+		cmbYearLevel_EditPanel.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5"}));
+		cmbYearLevel_EditPanel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		cmbYearLevel_EditPanel.setBounds(431, 286, 109, 22);
+		EditPanel.add(cmbYearLevel_EditPanel);
+				
+		cmbBlock_EditPanel = new JComboBox();
+		cmbBlock_EditPanel.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3"}));
+		cmbBlock_EditPanel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		cmbBlock_EditPanel.setBounds(431, 331, 109, 22);
+		EditPanel.add(cmbBlock_EditPanel);
+				
+		JLabel lblStatus_2 = new JLabel("STATUS:");
+		lblStatus_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblStatus_2.setBounds(58, 335, 64, 19);
+		EditPanel.add(lblStatus_2);
+				
+		cmbStatus_EditPanel = new JComboBox();
+		cmbStatus_EditPanel.setModel(new DefaultComboBoxModel(new String[] {"REGULAR", "IRREGULAR"}));
+		cmbStatus_EditPanel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		cmbStatus_EditPanel.setBounds(132, 335, 159, 22);
+		EditPanel.add(cmbStatus_EditPanel);
+				
+		txtContact_EditPanel = new JTextField();
+		txtContact_EditPanel.setColumns(10);
+		txtContact_EditPanel.setBounds(336, 384, 204, 28);
+		EditPanel.add(txtContact_EditPanel);
+				
+		JLabel lblContactnumber_2 = new JLabel("CONTACT_NUMBER");
+		lblContactnumber_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblContactnumber_2.setBounds(377, 422, 148, 19);
+		EditPanel.add(lblContactnumber_2);
+				
+		JLabel lblSchoolemail_2 = new JLabel("SCHOOL_EMAIL");
+		lblSchoolemail_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblSchoolemail_2.setBounds(149, 422, 112, 19);
+		EditPanel.add(lblSchoolemail_2);
+				
+		txtEmail_EditPanel = new JTextField();
+		txtEmail_EditPanel.setEditable(false);
+		txtEmail_EditPanel.setColumns(10);
+		txtEmail_EditPanel.setBounds(86, 384, 240, 28);
+		EditPanel.add(txtEmail_EditPanel);
+				
+		btnGenerate_AddPanel_1 = new JButton("Generate");
+		btnGenerate_AddPanel_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		btnGenerate_AddPanel_1.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		btnGenerate_AddPanel_1.setBackground(new Color(255, 250, 250));
+		btnGenerate_AddPanel_1.setBounds(10, 384, 73, 28);
+		EditPanel.add(btnGenerate_AddPanel_1);
+				
+		btnConfirm_EditPanel = new JButton("CONFIRM");
+		btnConfirm_EditPanel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnConfirm_EditPanel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		btnConfirm_EditPanel.setBackground(new Color(255, 250, 250));
+		btnConfirm_EditPanel.setBounds(177, 466, 179, 32);
+		EditPanel.add(btnConfirm_EditPanel);
+				
+		btnFind_EditPanel = new JButton("FIND");
+		btnFind_EditPanel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnFind_EditPanel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		btnFind_EditPanel.setBackground(new Color(255, 250, 250));
+		btnFind_EditPanel.setBounds(156, 95, 90, 28);
+		EditPanel.add(btnFind_EditPanel);
+				
+		JLabel lblYearlevel_2 = new JLabel("YEAR_LEVEL:");
+		lblYearlevel_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblYearlevel_2.setBounds(331, 289, 90, 19);
+		EditPanel.add(lblYearlevel_2);
+		
+		JLabel lblBlocknumber_2 = new JLabel("BLOCK_NUMBER:");
+		lblBlocknumber_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblBlocknumber_2.setBounds(304, 334, 117, 19);
+		EditPanel.add(lblBlocknumber_2);
+				
+		btnRefresh = new JButton("REFRESH");
+		btnRefresh.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		btnRefresh.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		btnRefresh.setBackground(Color.WHITE);
+		btnRefresh.setBounds(574, 15, 66, 32);
+		btnRefresh.addActionListener(this);
+		MainStudentPanel.add(btnRefresh);
+		btnRemove_RemovePanel.addActionListener(this);
+		btnClear_AddPanel.addActionListener(this);
 
+		refresh();
 	}
 
 	/********************** EVENT HANDLERS **********************/
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
+		// SEARCH PANEL ------------------------
 		if (e.getSource() == btnSearch){
 			searchedStudents = Database.searchStudent(txtSearchBar.getText());
 			if (isTableEmpty){
@@ -368,20 +718,38 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 					isTableEmpty = true;
 					fillTable((DefaultTableModel) table.getModel());
 				}
+				return;
 			}
 			catch (Exception ex) {
-				ex.printStackTrace();
+				// ex.printStackTrace();
 				JOptionPane.showMessageDialog(this, "INVALID ID", "INVALID", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		
-		// selectedRows = table.getSelectedRows();
-
-		if (e.getSource() == btnAdd){
-			setActionAdd();
+		
+		// ADD PANEL -----------------------------
+		if (e.getSource() == btnClear_AddPanel){
+			clearAddPanel();
+			return;
 		}
-		else if (e.getSource() == btnRemove){
-			setActionRemove();
+
+		if (e.getSource() == btnConfirm_AddPanel){
+			addStudent();
+		}
+
+		if (e.getSource() == btnRefresh){
+			refresh();
+			return;
+		}
+
+		if (e.getSource() == btnGenerate_AddPanel) {
+			if (!txtFirstName_AddPanel.getText().isBlank() && !txtLastName_AddPanel.getText().isBlank() && isDigit(txtID_AddPanel.getText())) {
+				txtEmail_AddPanel.setText(Database.generateEmail(txtLastName_AddPanel.getText(), txtFirstName_AddPanel.getText(), 
+				txtMiddleName_AddPanel.getText(), Integer.parseInt(txtID_AddPanel.getText())));
+			}
+			else {
+				JOptionPane.showMessageDialog(this, "INVALID FIRST_NAME, LAST_NAME, OR ID.", "INVALID", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 	}
 
@@ -389,6 +757,11 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 	public void itemStateChanged(ItemEvent e) {
 		if (e.getSource() == cmbSearchOption){
 			setTableModel((String)cmbSearchOption.getSelectedItem());
+			return;
+		}
+		
+		if (e.getSource() == cmbDegree_AddPanel) {
+			txtDeptHeadID_AddPanel.setText(Integer.toString(Database.getCourseHeadID((String)cmbDegree_AddPanel.getSelectedItem())));
 		}
 		
 	}
@@ -433,104 +806,52 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 
 	}
 
-	private void setActionAdd(){
-		
-		action = "ADD";
-
-
-		lblAction.setText(action);;
-		txtID.setText(null);
-		txtID.setEditable(true);
-
-		txtLastName.setText(null);
-		txtLastName.setEditable(true);
-
-		txtFirstName.setText(null);
-		txtFirstName.setEditable(true);
-
-		txtMiddleName.setText(null);
-		txtMiddleName.setEditable(true);
-
-		cmbGender.setSelectedItem(null);
-		cmbGender.setEditable(false);
-
-		cmbDegreeProgram.setSelectedItem(null);
-		cmbDegreeProgram.setEditable(false);
-
-		txtDeptHeadID.setText(null);
-		txtDeptHeadID.setEditable(false);
-
-		cmbYearLevel.setSelectedItem(null);
-		cmbYearLevel.setEditable(false);
-			
-		cmbBlockNumber.setSelectedItem(null);
-		cmbBlockNumber.setEditable(false);
-
-		cmbStatus.setSelectedItem(null);
-		cmbStatus.setEditable(false);
-			
-		txtSchoolEmail.setText(null);
-		txtSchoolEmail.setEditable(false);
-
-		txtContactNumber.setText(null);
-		txtContactNumber.setEditable(true);
+	private void clearAddPanel(){
+		txtID_AddPanel.setText(null);
+		txtLastName_AddPanel.setText(null);
+		txtFirstName_AddPanel.setText(null);
+		txtMiddleName_AddPanel.setText(null);
+		txtEmail_AddPanel.setText(null);
+		txtContact_AddPanel.setText(null);
 	}
+	
+	/********************************************************/
 
-	private void setActionRemove(){
+	private void addStudent(){
 
-		action = "REMOVE";
+		if (!txtFirstName_AddPanel.getText().isBlank() && 
+			!txtLastName_AddPanel.getText().isBlank() && 
+			isDigit(txtID_AddPanel.getText()) &&
+			!txtEmail_AddPanel.getText().isBlank() &&
+			isDigit(txtContact_AddPanel.getText()))
+			{
+				Object[] info = new Object[] {
+					Integer.parseInt(txtID_AddPanel.getText()),
+					txtLastName_AddPanel.getText(),
+					txtFirstName_AddPanel.getText(),
+					txtMiddleName_AddPanel.getText(),
+					(String)cmbGender_AddPanel.getSelectedItem(),
+					(String)cmbDegree_AddPanel.getSelectedItem(),
+					Integer.parseInt((String)cmbYearLevel_AddPanel.getSelectedItem()),
+					Integer.parseInt((String)cmbBlock_AddPanel.getSelectedItem()),
+					Integer.parseInt(txtDeptHeadID_AddPanel.getText()),
+					(String)cmbStatus_AddPanel.getSelectedItem(),
+					txtEmail_AddPanel.getText(),
+					txtContact_AddPanel.getText()
+				};
+				if(Database.addStudent(info)){
+					JOptionPane.showMessageDialog(this, "STUDENT SUCCESSFULY ADDED", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+				}
+				else {
+					JOptionPane.showMessageDialog(this, "ERROR ADDING STUDENT", "ERROR", JOptionPane.ERROR_MESSAGE);
+				}
+			}
 
-		
-		lblAction.setText(action);;
-		txtID.setEditable(false);
-		txtLastName.setEditable(false);
-		txtFirstName.setEditable(false);
-		txtMiddleName.setEditable(false);
-		cmbGender.setEditable(false);
-		cmbDegreeProgram.setEditable(false);
-		txtDeptHeadID.setEditable(false);
-		cmbYearLevel.setEditable(false);
-		cmbBlockNumber.setEditable(false);
-		cmbStatus.setEditable(false);
-		txtSchoolEmail.setEditable(false);
-		txtContactNumber.setEditable(false);
-
-		if (selectedRows != null){
-
-			
-			txtID.setText(null);
-			txtLastName.setText(null);
-			txtFirstName.setText(null);
-			txtMiddleName.setText(null);
-			cmbGender.setSelectedItem(null);
-			cmbDegreeProgram.setSelectedItem(null);
-			txtDeptHeadID.setText(null);
-			cmbYearLevel.setSelectedItem(null);
-			cmbBlockNumber.setSelectedItem(null);
-			cmbStatus.setSelectedItem(null);
-			txtSchoolEmail.setText(null);
-			txtContactNumber.setText(null);
-
-		} 
 		else {
-
-			Object[] studentInfo = Database.getStudentInfo((int)table.getModel().getValueAt(selectedRows[0], 0));
-
-			txtID.setText(Integer.toString((int)studentInfo[0]));
-			txtLastName.setText((String)studentInfo[1]);
-			txtFirstName.setText((String)studentInfo[2]);
-			txtMiddleName.setText((String)studentInfo[3]);
-			cmbGender.setSelectedItem((String)studentInfo[4]);
-			cmbDegreeProgram.setSelectedItem((String)studentInfo[5]);
-			cmbYearLevel.setSelectedItem(Integer.toString((int)studentInfo[6]));
-			cmbBlockNumber.setSelectedItem(Integer.toString((int)studentInfo[7]));
-			txtDeptHeadID.setText(Integer.toString((int)studentInfo[8]));
-			cmbStatus.setSelectedItem((String)studentInfo[9]);
-			txtSchoolEmail.setText((String)studentInfo[10]);
-			txtContactNumber.setText((String)studentInfo[11]);
-
+			JOptionPane.showMessageDialog(this, "STUDENT INFORMATION IS INVALID", "INVALID INFO", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
+	/********************************************************/
 
 	private void clearTable(DefaultTableModel TableModel){
 		if (TableModel.getRowCount() != 0){
@@ -575,7 +896,21 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 		isTableEmpty = false;
 	}
 
+	private void refresh(){
+		var course = Database.getAllCourse();
+		String[] cmbModel = new String[course.size()];
+		for (int i = 0; i < cmbModel.length; i++){
+			cmbModel[i] = course.get(i);
+		}
+		cmbDegree_AddPanel.setModel((new DefaultComboBoxModel(cmbModel)));
+		cmbDegree_EditPanel.setModel((new DefaultComboBoxModel(cmbModel)));
+	}
 
-
-
+	private boolean isDigit(String id){
+		if (id.matches("[0-9]+")){
+			return true;
+		}else {
+			return false;
+		}
+	}
 }
