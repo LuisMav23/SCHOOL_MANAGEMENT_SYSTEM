@@ -48,7 +48,7 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 		new Object[][] {
 		},
 		new String[] {
-			"STUDENT_ID", "LAST_NAME", "FIRST_NAME", "MIDDLE_NAME", "PROGRAM", "YEAR_LEVEL", "BLOCK", "HEAD_ID", "STATUS"
+			"STUDENT_ID", "LAST_NAME", "FIRST_NAME", "MIDDLE_NAME", "PROGRAM", "YEAR", "BLOCK", "HEAD_ID", "STATUS"
 		}
 	);
 
@@ -170,7 +170,7 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 		
 		lblNewLabel = new JLabel("STUDENT DATABASE");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 30));
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 50));
 		lblNewLabel.setBounds(10, 10, 554, 75);
 		MainStudentPanel.add(lblNewLabel);
 		
@@ -793,7 +793,7 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 				}
 				else{
 					JOptionPane.showMessageDialog(this, "STUDENT DOES NOT EXIST", "ERROR", JOptionPane.ERROR_MESSAGE);
-				return;
+					return;
 				}
 			}
 			else {
@@ -887,7 +887,7 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 		
 	}
 
-	/****************** END OF EVENT HANDLERS ******************/
+	/*********************** END OF EVENT HANDLERS ***********************/
 
 	private void setTableModel(String Model) {
 
@@ -908,10 +908,10 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 			table.getColumnModel().getColumn(2).setPreferredWidth(130);
 			table.getColumnModel().getColumn(3).setPreferredWidth(100);
 			table.getColumnModel().getColumn(4).setPreferredWidth(100);
-			table.getColumnModel().getColumn(5).setPreferredWidth(70);
+			table.getColumnModel().getColumn(5).setPreferredWidth(60);
 			table.getColumnModel().getColumn(6).setPreferredWidth(60);
 			table.getColumnModel().getColumn(7).setPreferredWidth(60);
-			table.getColumnModel().getColumn(8).setPreferredWidth(70);
+			table.getColumnModel().getColumn(8).setPreferredWidth(80);
 		}
 		else if (Model.equalsIgnoreCase("Contact Info")) {
 

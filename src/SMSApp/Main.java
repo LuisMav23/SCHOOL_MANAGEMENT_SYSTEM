@@ -8,28 +8,29 @@ public class Main {
 	public static void main(String[] args) {
 		Database.connect();
 		Database.updateStudentDB();
+		Database.updateFacultyDB();
 
-		// EventQueue.invokeLater(new Runnable() {
-		// 	public void run() {
-		// 		try {
-		// 			LoginWindow frame = new LoginWindow();
-		// 			frame.setVisible(true);
-		// 		} catch (Exception e) {
-		// 			e.printStackTrace();
-		// 		}
-		// 	}
-		// });
-		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainWindow frame = new MainWindow();
+					LoginWindow frame = new LoginWindow();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
+		
+		// EventQueue.invokeLater(new Runnable() {
+		// 	public void run() {
+		// 		try {
+		// 			MainWindow frame = new MainWindow();
+		// 			frame.setVisible(true);
+		// 		} catch (Exception e) {
+		// 			e.printStackTrace();
+		// 		}
+		// 	}
+		// });
 		
 		// Database.addStudent(new Object[]{2, "w", "w", "w", "M", "BSCPE", 1, 1, 1, "REGULAR", "L", "L"});
 

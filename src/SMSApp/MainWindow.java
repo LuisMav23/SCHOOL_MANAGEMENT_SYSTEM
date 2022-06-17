@@ -20,6 +20,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.border.MatteBorder;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MainWindow extends JFrame implements ActionListener{
 
@@ -77,12 +79,35 @@ public class MainWindow extends JFrame implements ActionListener{
 		HeaderPanel.setLayout(null);
 		
 		btnStudent = new JButton("STUDENT");
+		// btnStudent.addMouseListener(new MouseAdapter() {
+		// 	@Override
+		// 	public void mouseEntered(MouseEvent e) {
+		// 		btnStudent.setBorder(new MatteBorder(0, 1, 0, 1, Color.decode("#3a1c71")));
+		// 		btnStudent.setForeground(Color.BLACK);
+		// 		btnStudent.setContentAreaFilled(true);
+		// 	}
+		// 	@Override
+		// 	public void mouseExited(MouseEvent e) {
+		// 		btnStudent.setBorder(null);
+		// 		btnStudent.setForeground(Color.WHITE);
+		// 		btnStudent.setContentAreaFilled(false);
+		// 	}
+		// 	@Override
+		// 	public void mousePressed(MouseEvent e) {
+		// 		btnStudent.setBackground(Color.decode("#8644ff"));
+		// 	}
+		// 	@Override
+		// 	public void mouseReleased(MouseEvent e) {
+		// 		btnStudent.setBackground(Color.decode("#763ddd"));
+		// 	}
+		// });
 		btnStudent.setFont(new Font("MS UI Gothic", Font.BOLD, 18));
 		btnStudent.setForeground(Color.WHITE);
 		btnStudent.setBounds(400, 1, 170, 100);
 		btnStudent.setOpaque(false);
 		btnStudent.setContentAreaFilled(false);
 		btnStudent.setBorder(null);
+		btnStudent.setBackground(Color.decode("#763ddd"));
 		btnStudent.addActionListener(this);
 		HeaderPanel.add(btnStudent);
 		
@@ -94,6 +119,11 @@ public class MainWindow extends JFrame implements ActionListener{
 		HeaderPanel.add(lblLogo);
 		
 		btnFaculty = new JButton("FACULTY");
+		btnFaculty.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+		});
 		btnFaculty.setOpaque(false);
 		btnFaculty.setForeground(Color.WHITE);
 		btnFaculty.setFont(new Font("MS UI Gothic", Font.BOLD, 18));
@@ -152,8 +182,7 @@ public class MainWindow extends JFrame implements ActionListener{
 		StudentPanel = new StudentPanel();
 		ContentCardPanel.add(StudentPanel, "Student Panel");
 		
-		FacultyPanel = new JPanel();
-		FacultyPanel.setBackground(new Color(255, 102, 255));
+		FacultyPanel = new FacultyPanel();
 		ContentCardPanel.add(FacultyPanel, "Faculty Panel");
 		
 		CoursePanel = new JPanel();

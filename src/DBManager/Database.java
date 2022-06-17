@@ -22,10 +22,10 @@ public class Database {
                 } catch (ClassNotFoundException e) {
                     System.out.println(e.getMessage());
                 }  
-                ServerConnection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/School_Management_System","root","GABRIEL232514");
+                ServerConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/School_Management_System","root","GABRIEL232514");
                 // System.out.print("Connection Successful");
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
             }  
         } else {
             System.out.println("Connection Already Established");
@@ -198,7 +198,6 @@ public class Database {
     }
 
 
-
     /* GET ALL COURSES */
     public static List<String> getAllCourse(){
         List<String> course = new ArrayList<>();
@@ -219,11 +218,30 @@ public class Database {
 
 
 
+
     /* GETS COURSE HEAD ID */
     public static int getCourseHeadID(String course){
         try{
             Statement stm = ServerConnection.createStatement();
             String sqlstm = "SELECT DEPARTMENT_HEAD_ID FROM COURSE WHERE DEGREE_PROGRAM = '" + course + "';";
+            ResultSet rs = stm.executeQuery(sqlstm);
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+            else {
+                return 0;
+            }
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+            return 0;
+        }
+    }
+
+    public static int getCourseHeadID(int id){
+        try{
+            Statement stm = ServerConnection.createStatement();
+            String sqlstm = "SELECT DEPARTMENT_HEAD_ID FROM COURSE WHERE DEPARTMENT_ID = '" + id + "';";
             ResultSet rs = stm.executeQuery(sqlstm);
             if(rs.next()){
                 return rs.getInt(1);
@@ -338,7 +356,58 @@ public class Database {
 
     /**************************************************** FACULTY ****************************************************/
 
+    /* FINDS ALL STUDENTS THAT MATCHES THE SEACRH KEYWORD */
+    public static List<Object[]> searchFaculty(String keyword){
+        List<Object[]> facultylist = new ArrayList<>();
+        try{
+            if (keyword.isBlank()){
+                Statement stm = ServerConnection.createStatement();
+                String sqlstm = "SELECT * FROM FACULTY LIMIT 5000;";
+                ResultSet rs = stm.executeQuery(sqlstm);
+                while(rs.next()){
+                    facultylist.add(setFacultyInfoArray(rs));
+                }
+                return facultylist;
+            }
+            else {
+                Statement stm = ServerConnection.createStatement();
+                String sqlstm = "SELECT * FROM FACULTY WHERE LAST_NAME LIKE '%" + keyword + 
+                                "%' OR FIRST_NAME LIKE '%" + keyword + 
+                                "%' OR MIDDLE_NAME LIKE '%" + keyword + 
+                                "%' OR GENDER LIKE '%" + keyword +  
+                                "%' OR FACULTY_EMAIL LIKE '%" + keyword + "%' LIMIT 5000;";
+                ResultSet rs = stm.executeQuery(sqlstm);
+                while(rs.next()){
+                    facultylist.add(setFacultyInfoArray(rs));
+                }
+                return facultylist;
+            }
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+            return null;
+        }
+        
+    }
 
+    public static List<Object[]> searchFacultytByID(int id){
+        List<Object[]> facultylist = new ArrayList<>();
+        try{
+            Statement stm = ServerConnection.createStatement();
+            String sqlstm = "SELECT * FROM FACULTY WHERE FACULTY_ID =" + id + " LIMIT 5000;";
+            ResultSet rs = stm.executeQuery(sqlstm);
+            while(rs.next()){
+                facultylist.add(setFacultyInfoArray(rs));
+            }
+            return facultylist;
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+            return null;
+        }
+        
+    }
+        
 
     /* GET ALL FACULTY INFO BY ID*/
     public static Object[] getFacultyInfo(int id){
@@ -359,6 +428,24 @@ public class Database {
             return null;
         }
     }
+
+    public static void updateFacultyDB(){
+        try{
+           
+           Statement stm = ServerConnection.createStatement();
+           var facultyInfo = searchFaculty("");
+           for (Object[] obj : facultyInfo){
+               var generatedEmail = generateEmail((String)obj[1], (String)obj[2], (String)obj[3], (Integer)obj[0]);
+               String email = "UPDATE FACULTY SET FACULTY_EMAIL = '" + generatedEmail + "' WHERE FACULTY_ID = " + (Integer)obj[0] + ";";
+               String HeadID = "UPDATE FACULTY SET SUPER_ID = " + getCourseHeadID((int)obj[5]) + " WHERE FACULTY_ID = " + (Integer)obj[0] + ";";
+               stm.execute(email); 
+               stm.execute(HeadID); 
+           }
+       }
+       catch (SQLException ex){
+           ex.printStackTrace();
+       }
+   }
 
 
 
