@@ -220,5 +220,5 @@ public class MainWindow extends JFrame implements ActionListener{
 			CardLayout cl = (CardLayout)(ContentCardPanel.getLayout());
 		    cl.show(ContentCardPanel, "Admin Panel");
 		}
-	}
+	} 
 }

@@ -439,7 +439,7 @@ public class Database {
                String email = "UPDATE FACULTY SET FACULTY_EMAIL = '" + generatedEmail + "' WHERE FACULTY_ID = " + (Integer)obj[0] + ";";
                String HeadID = "UPDATE FACULTY SET SUPER_ID = " + getCourseHeadID((int)obj[5]) + " WHERE FACULTY_ID = " + (Integer)obj[0] + ";";
                stm.execute(email); 
-               stm.execute(HeadID); 
+               stm.execute(HeadID);  
            }
        }
        catch (SQLException ex){
@@ -447,6 +447,86 @@ public class Database {
        }
    }
 
+   public static boolean addFaculty(Object[] facultyInfo){
+        try{
+            String sqlstm = "INSERT INTO FACULTY VALUES(?,?,?,?,?,?,?,?,?,?)";
+            PreparedStatement stm = ServerConnection.prepareStatement(sqlstm);
+
+            stm.setInt(1, (int)facultyInfo[0]);         //STUDENT_ID 
+            stm.setString(2, (String)facultyInfo[1]);   //LAST_NAME
+            stm.setString(3, (String)facultyInfo[2]);   //FIRST_NAME
+            stm.setString(4, (String)facultyInfo[3]);   //MIDDLE_NAME
+            stm.setString(5, (String)facultyInfo[4]);   //GENDER
+            stm.setInt(6, (int)facultyInfo[5]);         //DEPARTMENT_ID
+            stm.setInt(7, (int)facultyInfo[6]);         //SUPER_ID
+            stm.setDouble(8, (double)facultyInfo[7]);   //SALARY
+            stm.setString(9, (String)facultyInfo[8]);   //FACULTY_EMAIL
+            stm.setString(10, (String)facultyInfo[9]);  //CONTACT_NUMBER
+
+            stm.execute();
+            return true;
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+            return false;
+        }
+   }
+
+   public static boolean deleteFaculty(int id) {
+        try{
+            Statement stm = ServerConnection.createStatement();
+            String sqlstm = "DELETE FROM FACULTY WHERE FACULTY_ID = " + Integer.toString(id) + ";"; 
+            
+
+            stm.execute(sqlstm);
+            return true;
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean updateFaculty(int id, Object[] info) {
+        try{
+            String sqlstm = "UPDATE FACULTY SET " +
+                            "LAST_NAME = '" + (String)info[0] + "', " +
+                            "FIRST_NAME = '" + (String)info[1] + "', " +
+                            "MIDDLE_NAME = '" + (String)info[2] + "', " +
+                            "GENDER = '" + (String)info[3] + "', " +
+                            "DEPARTMENT_ID = " + info[4] + ", " +
+                            "SUPER_ID = " + info[5]  + ", " +
+                            "SALARY = " + (Double)info[6]  + ", " +
+                            "FACULTY_EMAIL = '" + (String)info[7]  + "', " +
+                            "CONTACT_NUMBER = '" + (String)info[8] + "' " +
+                            "WHERE FACULTY_ID = " + id + " ;";
+                            
+            Statement stm = ServerConnection.createStatement();
+            stm.execute(sqlstm);
+            return true;
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    public static List<String> getAllDeptID(){
+        List<String> ID = new ArrayList<>();
+        try{
+            Statement stm = ServerConnection.createStatement();
+            String sqlstm = "SELECT DEPARTMENT_ID FROM COURSE;";
+            ResultSet rs = stm.executeQuery(sqlstm);
+            while(rs.next()){
+                ID.add(rs.getString(1));
+            }
+            return ID;
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
 
 
     /*********** END OF PUBLIC METHODS ************/

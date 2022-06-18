@@ -31,7 +31,8 @@ import java.util.List;
 
 public class FacultyPanel extends JPanel implements ActionListener, ItemListener	{
 
-
+	private Object[] selectedFacultyToRemove = null;
+	private Object[] selectedFacultyToEdit = null;
 	private List<Object[]> searchedFaculty = new ArrayList<>();
 	private boolean isTableEmpty = true;
 
@@ -104,12 +105,13 @@ public class FacultyPanel extends JPanel implements ActionListener, ItemListener
 	private JButton btnFind_EditPanel;
 	private JComboBox cmbGender_EditPanel;
 	private JComboBox cmbDeptID_EditPanel;
-	private JComboBox cmbSuperID_EditPanel;
 	private JButton btnGenerate_EditPanel;
 	private JButton btnSearchById;
 	private JButton btnSearch;
 	private JComboBox cmbSearchOption;
 	private JButton btnRefresh;
+	private JTextField txtSuperID_AddPanel;
+	private JTextField txtSuperID_EditPanel;
 
 
 
@@ -199,6 +201,7 @@ public class FacultyPanel extends JPanel implements ActionListener, ItemListener
 		cmbDeptID_AddPanel = new JComboBox();
 		cmbDeptID_AddPanel.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		cmbDeptID_AddPanel.setBounds(345, 257, 195, 22);
+		cmbDeptID_AddPanel.addItemListener(this);
 		AddPanel.add(cmbDeptID_AddPanel);
 		
 		JLabel lblDeptheadid = new JLabel("SUPER_ID:");
@@ -210,11 +213,6 @@ public class FacultyPanel extends JPanel implements ActionListener, ItemListener
 		lblYearlevel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblYearlevel.setBounds(245, 327, 90, 19);
 		AddPanel.add(lblYearlevel);
-		
-		JComboBox cmbSuperID_AddPanel = new JComboBox();
-		cmbSuperID_AddPanel.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		cmbSuperID_AddPanel.setBounds(96, 326, 139, 22);
-		AddPanel.add(cmbSuperID_AddPanel);
 		
 		txtEmail_AddPanel = new JTextField();
 		txtEmail_AddPanel.setEditable(false);
@@ -252,12 +250,14 @@ public class FacultyPanel extends JPanel implements ActionListener, ItemListener
 		btnGenerate_AddPanel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		btnGenerate_AddPanel.setBackground(new Color(255, 250, 250));
 		btnGenerate_AddPanel.setBounds(10, 384, 73, 28);
+		btnGenerate_AddPanel.addActionListener(this);
 		AddPanel.add(btnGenerate_AddPanel);
 		
 		btnClear_AddPanel = new JButton("CLEAR");
 		btnClear_AddPanel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnClear_AddPanel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		btnClear_AddPanel.setBackground(new Color(255, 250, 250));
+		btnClear_AddPanel.addActionListener(this);
 		btnClear_AddPanel.setBounds(25, 468, 115, 32);
 		AddPanel.add(btnClear_AddPanel);
 		
@@ -266,12 +266,19 @@ public class FacultyPanel extends JPanel implements ActionListener, ItemListener
 		btnConfirm_AddPanel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		btnConfirm_AddPanel.setBackground(new Color(255, 250, 250));
 		btnConfirm_AddPanel.setBounds(345, 468, 179, 32);
+		btnConfirm_AddPanel.addActionListener(this);
 		AddPanel.add(btnConfirm_AddPanel);
 		
 		txtSalary_AddPanel = new JTextField();
 		txtSalary_AddPanel.setColumns(10);
 		txtSalary_AddPanel.setBounds(309, 318, 231, 33);
 		AddPanel.add(txtSalary_AddPanel);
+		
+		txtSuperID_AddPanel = new JTextField();
+		txtSuperID_AddPanel.setEditable(false);
+		txtSuperID_AddPanel.setColumns(10);
+		txtSuperID_AddPanel.setBounds(84, 318, 151, 33);
+		AddPanel.add(txtSuperID_AddPanel);
 		
 		JPanel RemovePanel = new JPanel();
 		RemovePanel.setLayout(null);
@@ -282,6 +289,7 @@ public class FacultyPanel extends JPanel implements ActionListener, ItemListener
 		btnRemove_RemovePanel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		btnRemove_RemovePanel.setBackground(new Color(255, 250, 250));
 		btnRemove_RemovePanel.setBounds(184, 463, 170, 32);
+		btnRemove_RemovePanel.addActionListener(this);
 		RemovePanel.add(btnRemove_RemovePanel);
 		
 		txtID_RemovePanel = new JTextField();
@@ -309,6 +317,7 @@ public class FacultyPanel extends JPanel implements ActionListener, ItemListener
 		btnFind_RemovePanel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		btnFind_RemovePanel.setBackground(new Color(255, 250, 250));
 		btnFind_RemovePanel.setBounds(156, 95, 90, 28);
+		btnFind_RemovePanel.addActionListener(this);
 		RemovePanel.add(btnFind_RemovePanel);
 		
 		txtLastName_RemovePanel = new JTextField();
@@ -439,6 +448,7 @@ public class FacultyPanel extends JPanel implements ActionListener, ItemListener
 		btnConfirm_EditPanel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		btnConfirm_EditPanel.setBackground(new Color(255, 250, 250));
 		btnConfirm_EditPanel.setBounds(177, 466, 179, 32);
+		btnConfirm_EditPanel.addActionListener(this);
 		EditPanel.add(btnConfirm_EditPanel);
 		
 		btnFind_EditPanel = new JButton("FIND");
@@ -446,6 +456,7 @@ public class FacultyPanel extends JPanel implements ActionListener, ItemListener
 		btnFind_EditPanel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		btnFind_EditPanel.setBackground(new Color(255, 250, 250));
 		btnFind_EditPanel.setBounds(156, 95, 90, 28);
+		btnFind_EditPanel.addActionListener(this);
 		EditPanel.add(btnFind_EditPanel);
 		
 		txtLastName_EditPanel = new JTextField();
@@ -484,6 +495,7 @@ public class FacultyPanel extends JPanel implements ActionListener, ItemListener
 		EditPanel.add(lblNewLabel_4_2);
 		
 		cmbGender_EditPanel = new JComboBox();
+		cmbGender_EditPanel.setModel(new DefaultComboBoxModel(new String[] {"M", "F"}));
 		cmbGender_EditPanel.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		cmbGender_EditPanel.setBounds(84, 255, 109, 22);
 		EditPanel.add(cmbGender_EditPanel);
@@ -496,6 +508,7 @@ public class FacultyPanel extends JPanel implements ActionListener, ItemListener
 		cmbDeptID_EditPanel = new JComboBox();
 		cmbDeptID_EditPanel.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		cmbDeptID_EditPanel.setBounds(345, 255, 195, 22);
+		cmbDeptID_EditPanel.addItem(this);
 		EditPanel.add(cmbDeptID_EditPanel);
 		
 		JLabel lblDeptheadid_2 = new JLabel("SUPER_ID:");
@@ -507,11 +520,6 @@ public class FacultyPanel extends JPanel implements ActionListener, ItemListener
 		lblYearlevel_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblYearlevel_2.setBounds(245, 325, 90, 19);
 		EditPanel.add(lblYearlevel_2);
-		
-		cmbSuperID_EditPanel = new JComboBox();
-		cmbSuperID_EditPanel.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		cmbSuperID_EditPanel.setBounds(96, 324, 139, 22);
-		EditPanel.add(cmbSuperID_EditPanel);
 		
 		txtEmail_EditPanel = new JTextField();
 		txtEmail_EditPanel.setEditable(false);
@@ -545,6 +553,12 @@ public class FacultyPanel extends JPanel implements ActionListener, ItemListener
 		lblContactnumber_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblContactnumber_2.setBounds(375, 420, 148, 19);
 		EditPanel.add(lblContactnumber_2);
+		
+		txtSuperID_EditPanel = new JTextField();
+		txtSuperID_EditPanel.setEditable(false);
+		txtSuperID_EditPanel.setColumns(10);
+		txtSuperID_EditPanel.setBounds(84, 316, 151, 33);
+		EditPanel.add(txtSuperID_EditPanel);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(574, 62, 905, 587);
@@ -592,6 +606,7 @@ public class FacultyPanel extends JPanel implements ActionListener, ItemListener
 		btnRefresh.setBounds(574, 16, 66, 32);
 		btnRefresh.addActionListener(this);
 		add(btnRefresh);
+		refresh();
 	}
 
 
@@ -643,14 +658,123 @@ public class FacultyPanel extends JPanel implements ActionListener, ItemListener
 		}
 
 		if (e.getSource() == btnRefresh){
-			Database.updateFacultyDB();
+			refresh();
 		}
 
 
 		// ADD PANEL -------------------------------------------------------------
+		if (e.getSource() == btnClear_AddPanel){
+			
+			txtID_AddPanel.setText(null);
+			txtLastName_AddPanel.setText(null);
+			txtFirstName_AddPanel.setText(null);
+			txtMiddleName_AddPanel.setText(null);
+			txtEmail_AddPanel.setText(null);
+			txtContact_AddPanel.setText(null);
+			txtSalary_AddPanel.setText(null);
+			txtSuperID_AddPanel.setText(null);
+			cmbGender_AddPanel.setSelectedItem((Object)"M");
+			cmbDeptID_AddPanel.setSelectedItem((Object)"1");
+			return;
+		}
+
+		if (e.getSource() == btnConfirm_AddPanel) {
+			addFaculty();
+			return;
+		}
+
+		if (e.getSource() == btnGenerate_AddPanel) {
+			if (!txtFirstName_AddPanel.getText().isBlank() && !txtLastName_AddPanel.getText().isBlank() && isDigit(txtID_AddPanel.getText())) {
+				txtEmail_AddPanel.setText(Database.generateEmail(txtLastName_AddPanel.getText(), txtFirstName_AddPanel.getText(), 
+				txtMiddleName_AddPanel.getText(), Integer.parseInt(txtID_AddPanel.getText())));
+				return;
+			}
+			else {
+				JOptionPane.showMessageDialog(this, "INVALID FIRST_NAME, LAST_NAME, OR ID", "INVALID", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
+
 
 		//REMOVE PANEL -----------------------------------------------------------
 		
+		if (e.getSource() == btnFind_RemovePanel) {
+			if (isDigit(txtID_RemovePanel.getText())){
+				selectedFacultyToRemove = Database.getFacultyInfo(Integer.parseInt(txtID_RemovePanel.getText()));
+				if (selectedFacultyToRemove != null) {
+					txtLastName_RemovePanel.setText((String)selectedFacultyToRemove[1]);
+					txtFirstName_RemovePanel.setText((String)selectedFacultyToRemove[2]);
+					txtMiddleName_RemovePanel.setText((String)selectedFacultyToRemove[3]);
+					txtGender_RemovePanel.setText((String)selectedFacultyToRemove[4]);
+					txtDeptID_RemovePanel.setText(Integer.toString((Integer)selectedFacultyToRemove[5]));
+					txtSuperID_RemovePanel.setText(Integer.toString((Integer)selectedFacultyToRemove[6]));
+					txtSalary_RemovePanel.setText(Double.toString((Double)selectedFacultyToRemove[7]));
+					txtEmail_RemovePanel.setText((String)selectedFacultyToRemove[8]);
+					txtContact_RemovePanel.setText((String)selectedFacultyToRemove[9]);
+					return;
+				}
+				else{
+					JOptionPane.showMessageDialog(this, "STUDENT DOES NOT EXIST", "ERROR", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+			}
+			else {
+				JOptionPane.showMessageDialog(this, "INVALID ID", "INVALID", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
+
+		if (e.getSource() == btnRemove_RemovePanel) {
+			if(selectedFacultyToRemove != null) {
+				if (Database.deleteFaculty((Integer)selectedFacultyToRemove[0])){
+					JOptionPane.showMessageDialog(this, "FACULTY SUCCESSFULY REMOVED", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+					return;
+				}
+				else {
+					JOptionPane.showMessageDialog(this, "ERROR REMOVING FACULTY", "ERROR", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+			}
+			else {
+				JOptionPane.showMessageDialog(this, "NO FACULTY IS SELECTED", "ERROR", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
+
+
+		//EDIT PANEL -------------------------------------------------------------
+
+		if (e.getSource() == btnFind_EditPanel) {
+			if (isDigit(txtID_EditPanel.getText())){
+				selectedFacultyToEdit = Database.getFacultyInfo(Integer.parseInt(txtID_EditPanel.getText()));
+				if (selectedFacultyToEdit != null) {
+					txtLastName_EditPanel.setText((String)selectedFacultyToEdit[1]);
+					txtFirstName_EditPanel.setText((String)selectedFacultyToEdit[2]);
+					txtMiddleName_EditPanel.setText((String)selectedFacultyToEdit[3]);
+					cmbGender_EditPanel.setSelectedItem(selectedFacultyToEdit[4]);
+					cmbDeptID_EditPanel.setSelectedItem(selectedFacultyToEdit[5]);
+					txtSuperID_EditPanel.setText(Integer.toString((Integer)selectedFacultyToEdit[6]));
+					txtSalary_EditPanel.setText(Double.toString((Double)selectedFacultyToEdit[7]));
+					txtEmail_EditPanel.setText((String)selectedFacultyToEdit[8]);
+					txtContact_EditPanel.setText((String)selectedFacultyToEdit[9]);
+					return;
+				}
+				else{
+					JOptionPane.showMessageDialog(this, "FACULTY DOES NOT EXIST", "ERROR", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+			}
+			else {
+				JOptionPane.showMessageDialog(this, "INVALID ID", "INVALID", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
+
+		if (e.getSource() == btnConfirm_EditPanel){
+			editFaculty();
+			return;
+		}
+
 	}
 
 
@@ -662,6 +786,14 @@ public class FacultyPanel extends JPanel implements ActionListener, ItemListener
 			setTableModel((String)cmbSearchOption.getSelectedItem());
 			return;
 		}
+
+		if (e.getSource() == cmbDeptID_AddPanel){
+			txtSuperID_AddPanel.setText(Integer.toString(Database.getCourseHeadID(Integer.parseInt((String)cmbDeptID_AddPanel.getSelectedItem()))));
+		}
+
+		if (e.getSource() == cmbDeptID_EditPanel){
+			txtSuperID_EditPanel.setText(Integer.toString(Database.getCourseHeadID(Integer.parseInt((String)cmbDeptID_EditPanel.getSelectedItem()))));
+		}
 		
 	}
 
@@ -670,7 +802,76 @@ public class FacultyPanel extends JPanel implements ActionListener, ItemListener
 	/*********************** END OF EVENT HANDLERS ***********************/
 
 
+	private void addFaculty() {
+		if (!txtFirstName_AddPanel.getText().isBlank() && 
+			!txtLastName_AddPanel.getText().isBlank() && 
+			isDigit(txtID_AddPanel.getText()) &&
+			!txtEmail_AddPanel.getText().isBlank() &&
+			isDigit(txtContact_AddPanel.getText())) 
+			{
+				if(Database.searchFacultytByID(Integer.parseInt(txtID_AddPanel.getText())).isEmpty()) {
 
+					Object[] info = new Object[] {
+						Integer.parseInt(txtID_AddPanel.getText()),
+						txtLastName_AddPanel.getText(),
+						txtFirstName_AddPanel.getText(),
+						txtMiddleName_AddPanel.getText(),
+						(String)cmbGender_AddPanel.getSelectedItem(),
+						Integer.parseInt((String)cmbDeptID_AddPanel.getSelectedItem()),
+						Integer.parseInt(txtSuperID_AddPanel.getText()),
+						Double.parseDouble(txtSalary_AddPanel.getText()),
+						txtEmail_AddPanel.getText(),
+						txtContact_AddPanel.getText()
+
+					};
+					if (Database.addFaculty(info)){
+						JOptionPane.showMessageDialog(this, "FACULTY SUCCESSFULY ADDED", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+					}
+					else {
+						JOptionPane.showMessageDialog(this, "ERROR ADDING FACULTY", "ERROR", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+				else {
+					JOptionPane.showMessageDialog(this, "FACULTY WITH ID :" + txtID_AddPanel.getText() + "\n ALREADY EXIST", "INVALID INFO", JOptionPane.INFORMATION_MESSAGE);
+				}
+			}	
+		else {
+			JOptionPane.showMessageDialog(this, "FACULTY INFORMATION IS INVALID", "INVALID INFO", JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
+
+	private void editFaculty() {
+		if (!txtFirstName_EditPanel.getText().isBlank() && 
+			!txtLastName_EditPanel.getText().isBlank() && 
+			isDigit(txtID_EditPanel.getText()) &&
+			!txtEmail_EditPanel.getText().isBlank() &&
+			isDigit(txtContact_EditPanel.getText())) 
+			{
+				Object[] info = new Object[] {
+					txtLastName_EditPanel.getText(),
+					txtFirstName_EditPanel.getText(),
+					txtMiddleName_EditPanel.getText(),
+					(String)cmbGender_EditPanel.getSelectedItem(),
+					Integer.parseInt((String)cmbDeptID_EditPanel.getSelectedItem()),
+					Integer.parseInt(txtSuperID_EditPanel.getText()),
+					Double.parseDouble(txtSalary_EditPanel.getText()),
+					txtEmail_EditPanel.getText(),
+					txtContact_EditPanel.getText()
+
+				};
+				if (Database.updateFaculty((int)selectedFacultyToEdit[0],info)){
+					JOptionPane.showMessageDialog(this, "FACULTY SUCCESSFULY EDITED", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+				}
+				else {
+					JOptionPane.showMessageDialog(this, "ERROR EDITING FACULTY", "ERROR", JOptionPane.ERROR_MESSAGE);
+				}
+			}	
+		else {
+			JOptionPane.showMessageDialog(this, "FACULTY INFORMATION IS INVALID", "INVALID INFO", JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
+
+	
 
 	/*********************** TABLE ***********************/
 	private void setTableModel(String Model) {
@@ -750,5 +951,22 @@ public class FacultyPanel extends JPanel implements ActionListener, ItemListener
 		}
 	}
 
-	/*********************** END TABLE ***********************/
+	private void refresh(){
+		var course = Database.getAllDeptID();
+		String[] cmbModel = new String[course.size()];
+		for (int i = 0; i < cmbModel.length; i++){
+			cmbModel[i] = course.get(i);
+		}
+		cmbDeptID_AddPanel.setModel((new DefaultComboBoxModel(cmbModel)));
+		cmbDeptID_EditPanel.setModel((new DefaultComboBoxModel(cmbModel)));
+		Database.updateFacultyDB();
+	}
+
+	private boolean isDigit(String id){
+		if (id.matches("[0-9]+")){
+			return true;
+		}else {
+			return false;
+		}
+	}
 }

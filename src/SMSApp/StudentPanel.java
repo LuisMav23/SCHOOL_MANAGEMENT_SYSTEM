@@ -960,9 +960,9 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 					else {
 						JOptionPane.showMessageDialog(this, "ERROR ADDING STUDENT", "ERROR", JOptionPane.ERROR_MESSAGE);
 					}
-				}
+				} 
 				else {
-					JOptionPane.showMessageDialog(this, "STUDENT WITH ID:" + txtID_AddPanel.getText() + "\n ALREADY EXIST", "INVALID INFO", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(this, "STUDENT WITH ID: " + txtID_AddPanel.getText() + "\n ALREADY EXIST", "INVALID INFO", JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 
