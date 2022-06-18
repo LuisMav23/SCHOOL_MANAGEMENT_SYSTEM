@@ -14,7 +14,7 @@ public class Database {
 	
 
     /*********** PRIVATE METHODS **********/
-	public static void connect(){
+	public static void connect(String user, String password){
         if (ServerConnection == null){
             try {
                 try {
@@ -22,7 +22,7 @@ public class Database {
                 } catch (ClassNotFoundException e) {
                     System.out.println(e.getMessage());
                 }  
-                ServerConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/School_Management_System","root","GABRIEL232514");
+                ServerConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/School_Management_System",user,password);
                 // System.out.print("Connection Successful");
             } catch (SQLException e) {
                 e.printStackTrace();
