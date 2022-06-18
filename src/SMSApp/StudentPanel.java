@@ -165,6 +165,7 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 		MainStudentPanel.add(scrollPane);
 		
 		table = new JTable();
+		table.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		table.setModel(PersonalInfoTable);		
 		scrollPane.setViewportView(table);
 		

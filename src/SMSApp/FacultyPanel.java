@@ -18,7 +18,6 @@ import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableModel;
 
 import DBManager.Database;
-
 import javax.swing.JTable;
 import javax.swing.DefaultComboBoxModel;
 
@@ -565,6 +564,7 @@ public class FacultyPanel extends JPanel implements ActionListener, ItemListener
 		add(scrollPane);
 		
 		table = new JTable();
+		table.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		table.setModel(PersonalInfoTable);
 		scrollPane.setViewportView(table);
 		
@@ -832,11 +832,11 @@ public class FacultyPanel extends JPanel implements ActionListener, ItemListener
 					}
 				}
 				else {
-					JOptionPane.showMessageDialog(this, "FACULTY WITH ID :" + txtID_AddPanel.getText() + "\n ALREADY EXIST", "INVALID INFO", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(this, "FACULTY WITH ID :" + txtID_AddPanel.getText() + "\n ALREADY EXIST", "INVALID INFO", JOptionPane.ERROR_MESSAGE);
 				}
 			}	
 		else {
-			JOptionPane.showMessageDialog(this, "FACULTY INFORMATION IS INVALID", "INVALID INFO", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(this, "FACULTY INFORMATION IS INVALID", "INVALID INFO", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 

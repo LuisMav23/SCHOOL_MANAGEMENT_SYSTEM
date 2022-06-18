@@ -185,8 +185,7 @@ public class MainWindow extends JFrame implements ActionListener{
 		FacultyPanel = new FacultyPanel();
 		ContentCardPanel.add(FacultyPanel, "Faculty Panel");
 		
-		CoursePanel = new JPanel();
-		CoursePanel.setBackground(new Color(102, 255, 255));
+		CoursePanel = new CoursePanel();
 		ContentCardPanel.add(CoursePanel, "Course Panel");
 		
 		LibraryPanel = new JPanel();

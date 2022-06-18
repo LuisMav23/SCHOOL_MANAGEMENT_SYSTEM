@@ -217,8 +217,6 @@ public class Database {
     }
 
 
-
-
     /* GETS COURSE HEAD ID */
     public static int getCourseHeadID(String course){
         try{
@@ -242,6 +240,24 @@ public class Database {
         try{
             Statement stm = ServerConnection.createStatement();
             String sqlstm = "SELECT DEPARTMENT_HEAD_ID FROM COURSE WHERE DEPARTMENT_ID = '" + id + "';";
+            ResultSet rs = stm.executeQuery(sqlstm);
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+            else {
+                return 0;
+            }
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+            return 0;
+        }
+    }
+
+    public static int getCourseID(String course){
+        try{
+            Statement stm = ServerConnection.createStatement();
+            String sqlstm = "SELECT DEPARTMENT_ID FROM COURSE WHERE DEGREE_PROGRAM = '" + course + "';";
             ResultSet rs = stm.executeQuery(sqlstm);
             if(rs.next()){
                 return rs.getInt(1);
@@ -284,6 +300,24 @@ public class Database {
             ex.printStackTrace();
             return false;
         }
+    }
+
+    public static List<Object[]> searchStudentByCourse(String course){
+        List<Object[]> studentlist = new ArrayList<>();
+        try{
+            Statement stm = ServerConnection.createStatement();
+            String sqlstm = "SELECT * FROM STUDENT WHERE STUDENT_ID =" + getCourseID(course) + " LIMIT 5000;";
+            ResultSet rs = stm.executeQuery(sqlstm);
+            while(rs.next()){
+                studentlist.add(setStudentInfoArray(rs));
+            }
+            return studentlist;
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+            return null;
+        }
+        
     }
 
 
@@ -407,6 +441,8 @@ public class Database {
         }
         
     }
+
+
         
 
     /* GET ALL FACULTY INFO BY ID*/
