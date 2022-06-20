@@ -69,7 +69,7 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 	private JLabel lblNewLabel;
 	JScrollPane scrollPane;
 	private JTable table;
-	private JComboBox cmbSearchOption;
+	private JComboBox<String> cmbSearchOption;
 
 
 	private JButton btnClear_AddPanel;
@@ -103,21 +103,21 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 	private JTabbedPane tabbedPane;
 	private JPanel AddPanel;
 	private JLabel lblID;
-	private JComboBox cmbGender_AddPanel;
-	private JComboBox cmbDegree_AddPanel;
-	private JComboBox cmbYearLevel_AddPanel;
-	private JComboBox cmbBlock_AddPanel;
-	private JComboBox cmbStatus_AddPanel;
+	private JComboBox<String> cmbGender_AddPanel;
+	private JComboBox<String> cmbDegree_AddPanel;
+	private JComboBox<String> cmbYearLevel_AddPanel;
+	private JComboBox<String> cmbBlock_AddPanel;
+	private JComboBox<String> cmbStatus_AddPanel;
 	private JButton btnGenerate_AddPanel;
 	private JPanel RemovePanel;
 	private JTextField txtID_RemovePanel;
 	private JButton btnFind_RemovePanel;
 	private JPanel EditPanel;
-	private JComboBox cmbDegree_EditPanel;
-	private JComboBox cmbGender_EditPanel;
-	private JComboBox cmbYearLevel_EditPanel;
-	private JComboBox cmbBlock_EditPanel;
-	private JComboBox cmbStatus_EditPanel;
+	private JComboBox<String> cmbDegree_EditPanel;
+	private JComboBox<String> cmbGender_EditPanel;
+	private JComboBox<String> cmbYearLevel_EditPanel;
+	private JComboBox<String> cmbBlock_EditPanel;
+	private JComboBox<String> cmbStatus_EditPanel;
 	private JButton btnGenerate_EditPanel;
 	private JButton btnConfirm_EditPanel;
 	private JButton btnFind_EditPanel;
@@ -924,8 +924,6 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 			table.getColumnModel().getColumn(4).setPreferredWidth(150);
 			table.getColumnModel().getColumn(5).setPreferredWidth(110);
 		}
-
-
 	}
 
 	

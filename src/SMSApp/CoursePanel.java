@@ -10,9 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import javax.swing.border.MatteBorder;
-import javax.swing.JTextField;
-import javax.swing.border.LineBorder;
-import javax.swing.JTabbedPane;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.JLabel;
@@ -41,7 +38,7 @@ public class CoursePanel extends JPanel implements ActionListener, ItemListener 
 		new Object[][] {
 		},
 		new String[] {
-			"STUDENT_ID", "YEAR", "BLOCK", "STATUS"
+			"STUDENT_NAME", "YEAR", "BLOCK", "STATUS"
 		}
 	);
 
@@ -50,7 +47,7 @@ public class CoursePanel extends JPanel implements ActionListener, ItemListener 
 			{null, null, null, null},
 		},
 		new String[] {
-			"FACULTY_ID", "DEPARTMENT_ID", "SUPER_ID", "SALARY"
+			"FACULTY_NAME", "DEPARTMENT_ID", "SUPER_ID", "SALARY"
 		}
 	);
 	
@@ -75,7 +72,7 @@ public class CoursePanel extends JPanel implements ActionListener, ItemListener 
 		add(scrollPane);
 		
 		tableCourse = new JTable();
-		tableCourse.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		tableCourse.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		tableCourse.setModel(courseTableModel);
 		tableCourse.getColumnModel().getColumn(0).setPreferredWidth(20);
 		tableCourse.getColumnModel().getColumn(1).setPreferredWidth(150);
@@ -91,17 +88,24 @@ public class CoursePanel extends JPanel implements ActionListener, ItemListener 
 		tableList = new JTable();
 		tableList.setModel(studentsListModel);
 		scrollPane_1.setViewportView(tableList);
+		tableList.getColumnModel().getColumn(0).setPreferredWidth(150);
+		tableList.getColumnModel().getColumn(1).setPreferredWidth(20);
+		tableList.getColumnModel().getColumn(2).setPreferredWidth(20);
+		tableList.getColumnModel().getColumn(3).setPreferredWidth(70);
 		
 		btnRefresh = new JButton("REFRESH");
 		btnRefresh.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnRefresh.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		btnRefresh.setBackground(Color.WHITE);
 		btnRefresh.setBounds(915, 26, 66, 32);
+		btnRefresh.addActionListener(this);
 		add(btnRefresh);
 		
 		cmbListOption = new JComboBox();
+		cmbListOption.setModel(new DefaultComboBoxModel(new String[] {"STUDENTS", "FACULTY"}));
 		cmbListOption.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		cmbListOption.setBounds(1334, 27, 145, 29);
+		cmbListOption.addItemListener(this);
 		add(cmbListOption);
 		
 		JLabel lblCourseDatabase = new JLabel("COURSE DATABASE");
@@ -116,31 +120,39 @@ public class CoursePanel extends JPanel implements ActionListener, ItemListener 
 		add(panel);
 		
 		cmbCourse = new JComboBox();
-		cmbCourse.setModel(new DefaultComboBoxModel(new String[] {"BSCPE", "BSCE"}));
+		cmbCourse.setModel(new DefaultComboBoxModel(new String[] {}));
 		cmbCourse.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		cmbCourse.setBounds(1081, 27, 145, 29);
 		cmbCourse.addItemListener(this);
 		add(cmbCourse);
+		refresh();
+		fillTableList();
+		fillCourseTable();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+		if (e.getSource() == btnRefresh){
+			refresh();
+		}
 		
 	}
 	
 	@Override
 	public void itemStateChanged(ItemEvent e) {
 		if (e.getSource() == cmbCourse) {
-			clearTable(studentsListModel);
-			var studentlist = Database.searchStudentByCourse((String) cmbCourse.getSelectedItem());
-			for (Object[] objStudent : studentlist){
-				studentsListModel.addRow(new Object[]{
-					objStudent[0],
-					objStudent[6],
-					objStudent[7],
-					objStudent[9]
-				});
+			fillTableList();
+			return;
+		}
+
+		if (e.getSource() == cmbListOption) {
+			if (cmbListOption.getSelectedItem().equals("STUDENTS")){
+				tableList.setModel(studentsListModel);
+				return;
+			}
+			else if (cmbListOption.getSelectedItem().equals("FACULTY")) {
+				tableList.setModel(facultyListModel);
+				return;
 			}
 		}
 	}
@@ -150,6 +162,53 @@ public class CoursePanel extends JPanel implements ActionListener, ItemListener 
 			for (int i = TableModel.getRowCount() - 1; i >= 0; i--){
 				TableModel.removeRow(i);
 			}
+		}
+	}
+
+	private void refresh(){
+		var course = Database.getAllCourse();
+		String[] cmbModel = new String[course.size()];
+		for (int i = 0; i < cmbModel.length; i++){
+			cmbModel[i] = course.get(i);
+		}
+		cmbCourse.setModel((new DefaultComboBoxModel(cmbModel)));
+		Database.updateStudentDB();
+	}
+
+	private void fillTableList(){
+		clearTable(studentsListModel);
+		clearTable(facultyListModel);
+		var studentlist = Database.searchStudentByCourse((String) cmbCourse.getSelectedItem());
+		for (Object[] objStudent : studentlist){
+			studentsListModel.addRow(new Object[]{
+				objStudent[2] + " " + objStudent[3] + " " + objStudent[1],
+				objStudent[6],
+				objStudent[7],
+				objStudent[9]
+			});
+		}
+		var facultylist = Database.searchfacultyByDeptID((String) cmbCourse.getSelectedItem());
+		for (Object[] objfaculty : facultylist){
+			facultyListModel.addRow(new Object[]{
+				objfaculty[2] + " " + objfaculty[3] + " " + objfaculty[1],
+				objfaculty[5],
+				objfaculty[6],
+				objfaculty[7]
+			});
+		}
+	}
+
+	private void fillCourseTable(){
+		clearTable(courseTableModel);
+		var courselist = Database.getCourseInfoList();
+		for (Object[] objCourse : courselist){
+				courseTableModel.addRow(new Object[]{
+				objCourse[0],
+				objCourse[1],
+				objCourse[2],
+				objCourse[3],
+				objCourse[4]
+			});
 		}
 	}
 }

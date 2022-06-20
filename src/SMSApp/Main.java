@@ -11,6 +11,7 @@ public class Main {
 		Database.connect(user, password);
 		Database.updateStudentDB();
 		Database.updateFacultyDB();
+		Database.updateCourseDB();
 
 		// EventQueue.invokeLater(new Runnable() {
 		// 	public void run() {

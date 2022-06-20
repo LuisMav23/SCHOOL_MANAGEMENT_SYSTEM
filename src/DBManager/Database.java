@@ -306,7 +306,7 @@ public class Database {
         List<Object[]> studentlist = new ArrayList<>();
         try{
             Statement stm = ServerConnection.createStatement();
-            String sqlstm = "SELECT * FROM STUDENT WHERE STUDENT_ID =" + getCourseID(course) + " LIMIT 5000;";
+            String sqlstm = "SELECT * FROM STUDENT WHERE DEGREE_PROGRAM = '" + course + "' LIMIT 5000;";
             ResultSet rs = stm.executeQuery(sqlstm);
             while(rs.next()){
                 studentlist.add(setStudentInfoArray(rs));
@@ -564,8 +564,106 @@ public class Database {
         }
     }
 
+    public static List<Object[]> searchfacultyByDeptID(String course){
+        List<Object[]> facultylist = new ArrayList<>();
+        try{
+            Statement stm = ServerConnection.createStatement();
+            String sqlstm = "SELECT * FROM  FACULTY WHERE DEPARTMENT_ID = " + getCourseID(course) + " LIMIT 5000;";
+            ResultSet rs = stm.executeQuery(sqlstm);
+            while(rs.next()){
+                facultylist.add(setFacultyInfoArray(rs));
+            }
+            return facultylist;
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+            return null;
+        }
+        
+    }
+
+    public static List<Object[]> getCourseInfoList(){
+        List<Object[]> courselist = new ArrayList<>();
+        try{
+            Statement stm = ServerConnection.createStatement();
+            String sqlstm = "SELECT * FROM COURSE;";
+            ResultSet rs = stm.executeQuery(sqlstm);
+            while(rs.next()){
+                courselist.add(setCourseInfoArray(rs));
+            }
+            return courselist;
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    public static void updateCourseDB(){
+        try{
+            Statement stm = ServerConnection.createStatement();
+            String sqlstm = "SELECT * FROM COURSE;";
+            ResultSet rs = stm.executeQuery(sqlstm);
+            while(rs.next()){
+                var courseInfo = setCourseInfoArray(rs);
+                updateNumberOfStudents(courseInfo);
+                updateNumberOfFaculty(courseInfo);
+            }
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+        }
+    }
 
     /*********** END OF PUBLIC METHODS ************/
+
+    private static void updateNumberOfStudents(Object[] courseInfo) throws SQLException{
+        Statement stm = ServerConnection.createStatement();
+        stm.executeUpdate("UPDATE COURSE SET NUMBER_OF_STUDENTS = " + getStudentCountInCourse((String)courseInfo[2]) +
+                            " WHERE DEPARTMENT_ID = " + courseInfo[0] + " ;");
+    }
+
+    private static void updateNumberOfFaculty(Object[] courseInfo) throws SQLException{
+        Statement stm = ServerConnection.createStatement();
+        stm.executeUpdate("UPDATE COURSE SET NUMBER_OF_FACULTY = " + getFacultyCountInCourse((Integer)courseInfo[1]) +
+                            " WHERE DEPARTMENT_ID = " + courseInfo[0] + " ;");
+    }
+
+    private static int getStudentCountInCourse(String course){
+        try{
+            Statement stm = ServerConnection.createStatement();
+            ResultSet rs = stm.executeQuery("SELECT COUNT(*) FROM STUDENT WHERE DEGREE_PROGRAM = '"+ course +"';");
+            if (rs.next()){
+                return rs.getInt(1);
+            }
+            else {
+                return 0;
+            }
+
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+            return 0;
+        }
+    }
+
+    private static int getFacultyCountInCourse(int id){
+        try{
+            Statement stm = ServerConnection.createStatement();
+            ResultSet rs = stm.executeQuery("SELECT COUNT(*) FROM FACULTY WHERE DEPARTMENT_ID = "+ id +";");
+            if (rs.next()){
+                return rs.getInt(1);
+            }
+            else {
+                return 0;
+            }
+
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+            return 0;
+        }
+    }
 
     private static Object[] setStudentInfoArray(ResultSet rs) throws SQLException{
         Object[] studentInfo = new Object[12];
@@ -589,8 +687,8 @@ public class Database {
         Object[] facultyInfo = new Object[10];
         
         facultyInfo[0] = rs.getInt(1);      //FACULTY_ID
-        facultyInfo[2] = rs.getString(3);   //LAST_NAME
-        facultyInfo[1] = rs.getString(2);   //FIRST_NAME
+        facultyInfo[2] = rs.getString(2);   //LAST_NAME
+        facultyInfo[1] = rs.getString(3);   //FIRST_NAME
         facultyInfo[3] = rs.getString(4);   //MIDDLE_NAME
         facultyInfo[4] = rs.getString(5);   //GENDER
         facultyInfo[5] = rs.getInt(6);      //DEPARTMENT_ID
@@ -601,6 +699,16 @@ public class Database {
         return facultyInfo;
     }
 
+    private static Object[] setCourseInfoArray(ResultSet rs) throws SQLException{
+        Object[] courseInfo = new Object[5];
+        
+        courseInfo[0] = rs.getInt(1);    //DEPARTMENT_ID
+        courseInfo[2] = rs.getString(2); //DEGREE_PROGRAM
+        courseInfo[1] = rs.getInt(3);    //DEPARTMENT_HEAD_ID
+        courseInfo[3] = rs.getInt(4);    //NUMBER_OF_STUDENTS
+        courseInfo[4] = rs.getInt(5);    //NUMBER_OF_FACULTY
+        return courseInfo;
+    }
     
 
 }
