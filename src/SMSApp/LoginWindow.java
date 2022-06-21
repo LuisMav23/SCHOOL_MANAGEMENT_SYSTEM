@@ -33,6 +33,9 @@ import java.awt.event.KeyEvent;
 
 public class LoginWindow extends JFrame implements ActionListener{
 
+	
+	String Pword = "";
+
 	/******** DECLARE UI COMPONENTS ********/
 	private JPanel contentPane;
 	private JTextField txtUsername;
@@ -46,24 +49,6 @@ public class LoginWindow extends JFrame implements ActionListener{
 	private JLabel lblSepTop;
 	
 	/********** END UI COMPONENTS **********/
-	
-
-	/* UNCOMMENT NYO TO KUNG USTO NYO MA RUN HEHE <3 */
-	// Pag ayaw comment nyo din pala yung package
-
-//	public static void main(String[] args) {
-//	 	EventQueue.invokeLater(new Runnable() {
-//	 		public void run() {
-//	 			try {
-//	 				LoginWindow frame = new LoginWindow();
-//	 				frame.setVisible(true);
-//	 			} catch (Exception e) {
-//	 				e.printStackTrace();
-//	 			}
-//	 		}
-//	 	});
-//	 }
-	
 
 	
 	public LoginWindow() {
@@ -202,14 +187,18 @@ public class LoginWindow extends JFrame implements ActionListener{
 	}
 	
 	private void confirmLogin() {
-		var isValid = Database.confirmLogin(txtUsername.getText(), txtPassword.getPassword());
+		var P = txtPassword.getPassword();
+        for (int i = 0; i < P.length; i++){
+            Pword += P[i]; 
+        }
+		var isValid = Database.confirmLogin(txtUsername.getText(), Pword);
 		if (isValid){
 			JOptionPane.showMessageDialog(this, "LOGIN SUCCESSFUL", "LOGIN", JOptionPane.INFORMATION_MESSAGE);
 			this.dispose();
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					try {
-						MainWindow frame = new MainWindow();
+						MainWindow frame = new MainWindow(txtUsername.getText(), Pword);
 						frame.setVisible(true);
 					} catch (Exception e) {
 						e.printStackTrace();

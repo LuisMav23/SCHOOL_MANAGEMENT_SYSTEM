@@ -13,26 +13,26 @@ public class Main {
 		Database.updateFacultyDB();
 		Database.updateCourseDB();
 
-		// EventQueue.invokeLater(new Runnable() {
-		// 	public void run() {
-		// 		try {
-		// 			LoginWindow frame = new LoginWindow();
-		// 			frame.setVisible(true);
-		// 		} catch (Exception e) {
-		// 			e.printStackTrace();
-		// 		}
-		// 	}
-		// });
-		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainWindow frame = new MainWindow();
+					LoginWindow frame = new LoginWindow();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
+		
+		// EventQueue.invokeLater(new Runnable() {
+		// 	public void run() {
+		// 		try {
+		// 			MainWindow frame = new MainWindow();
+		// 			frame.setVisible(true);
+		// 		} catch (Exception e) {
+		// 			e.printStackTrace();
+		// 		}
+		// 	}
+		// });
 	}
 }

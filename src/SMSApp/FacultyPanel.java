@@ -936,8 +936,8 @@ public class FacultyPanel extends JPanel implements ActionListener, ItemListener
 				obj[1], //LAST_NAME
 				obj[2], //FIRST_NAME
 				obj[3], //MIDDLE_NAME
-				obj[8],//FACULTY_EMAIL
-				obj[9] //CONTACT_NUMBER
+				obj[8], //FACULTY_EMAIL
+				obj[9]  //CONTACT_NUMBER
 			});
 		}
 		isTableEmpty = false;

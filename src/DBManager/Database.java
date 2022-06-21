@@ -9,6 +9,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 public class Database {
 	private static Connection ServerConnection = null;
 	
@@ -35,16 +37,12 @@ public class Database {
 
     
     /* CONFIRM LOGIN BY SEARCHING ADMIN TABLE */
-    public static boolean confirmLogin(String U, char[] P){
-        var Pword = "";
-        for (int i = 0; i < P.length; i++){
-            Pword += P[i]; 
-        }
+    public static boolean confirmLogin(String U, String P){
 
         try {
             Statement stm = ServerConnection.createStatement();
             
-            String sqlstm = "SELECT * FROM ADMIN WHERE USERNAME = '" + U + "' AND PASSWORD = '" + Pword + "';";
+            String sqlstm = "SELECT * FROM ADMIN WHERE USERNAME = '" + U + "' AND PASSWORD = '" + P + "';";
             ResultSet rs = stm.executeQuery(sqlstm);
             if (rs.next()) {
                 return true;
@@ -56,6 +54,23 @@ public class Database {
             e.printStackTrace();
             return false;
         }
+        
+    }
+
+    public static boolean updateLogin(String U, String P, String currP){
+
+        try {
+            Statement stm = ServerConnection.createStatement();
+            
+            String sqlstm = "UPDATE SCHOOL_MANAGEMENT_SYSTEM.ADMIN SET USERNAME = '" + U + "', PASSWORD = '" + P + "' WHERE PASSWORD = '" + currP + "';";
+            stm.execute(sqlstm);
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        
     }
 
 
@@ -443,9 +458,7 @@ public class Database {
     }
 
 
-        
-
-    /* GET ALL FACULTY INFO BY ID*/
+    /* GET ALL FACULTY INFO BY ID */
     public static Object[] getFacultyInfo(int id){
         
         try{
@@ -485,7 +498,7 @@ public class Database {
 
    public static boolean addFaculty(Object[] facultyInfo){
         try{
-            String sqlstm = "INSERT INTO FACULTY VALUES(?,?,?,?,?,?,?,?,?,?)";
+            String sqlstm = "INSERT INTO FACULTY VALUES(?,?,?,?,?,?,?,?,?,?);";
             PreparedStatement stm = ServerConnection.prepareStatement(sqlstm);
 
             stm.setInt(1, (int)facultyInfo[0]);         //STUDENT_ID 
@@ -497,7 +510,7 @@ public class Database {
             stm.setInt(7, (int)facultyInfo[6]);         //SUPER_ID
             stm.setDouble(8, (double)facultyInfo[7]);   //SALARY
             stm.setString(9, (String)facultyInfo[8]);   //FACULTY_EMAIL
-            stm.setString(10, (String)facultyInfo[9]);  //CONTACT_NUMBER
+            stm.setString(10, (String)facultyInfo[9]);  //CONTACT_NUMBER+
 
             stm.execute();
             return true;
@@ -623,11 +636,13 @@ public class Database {
                             " WHERE DEPARTMENT_ID = " + courseInfo[0] + " ;");
     }
 
+
     private static void updateNumberOfFaculty(Object[] courseInfo) throws SQLException{
         Statement stm = ServerConnection.createStatement();
         stm.executeUpdate("UPDATE COURSE SET NUMBER_OF_FACULTY = " + getFacultyCountInCourse((Integer)courseInfo[1]) +
                             " WHERE DEPARTMENT_ID = " + courseInfo[0] + " ;");
     }
+
 
     private static int getStudentCountInCourse(String course){
         try{
@@ -647,6 +662,7 @@ public class Database {
         }
     }
 
+
     private static int getFacultyCountInCourse(int id){
         try{
             Statement stm = ServerConnection.createStatement();
@@ -664,6 +680,7 @@ public class Database {
             return 0;
         }
     }
+
 
     private static Object[] setStudentInfoArray(ResultSet rs) throws SQLException{
         Object[] studentInfo = new Object[12];
@@ -683,6 +700,7 @@ public class Database {
         return studentInfo;
     }
 
+
     private static Object[] setFacultyInfoArray(ResultSet rs) throws SQLException{
         Object[] facultyInfo = new Object[10];
         
@@ -698,6 +716,7 @@ public class Database {
         facultyInfo[9] = rs.getString(10);  //CONTACT_NUMBER
         return facultyInfo;
     }
+
 
     private static Object[] setCourseInfoArray(ResultSet rs) throws SQLException{
         Object[] courseInfo = new Object[5];

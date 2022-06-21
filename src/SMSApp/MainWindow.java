@@ -25,6 +25,9 @@ import java.awt.event.MouseEvent;
 
 public class MainWindow extends JFrame implements ActionListener{
 
+	private static String Username;
+	private static String Password;
+
 	private JPanel contentPane;
 	private JPanel HeaderPanel;
 	private JPanel ContentCardPanel;
@@ -32,7 +35,6 @@ public class MainWindow extends JFrame implements ActionListener{
 	private JLabel lblLogo;
 	private JButton btnFaculty;
 	private JButton btnCourse;
-	private JButton btnLibrary;
 	private JButton btnAdmin;
 	private JButton btnLogOut;
 	private StudentPanel StudentPanel;
@@ -46,7 +48,11 @@ public class MainWindow extends JFrame implements ActionListener{
 	 */
 
 	/****** Create the frame ******/
-	public MainWindow() {
+	public MainWindow(String uname, String pword) {
+
+		this.Username = uname;
+		this.Password = pword;
+
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1500, 800);
@@ -103,7 +109,7 @@ public class MainWindow extends JFrame implements ActionListener{
 		// });
 		btnStudent.setFont(new Font("MS UI Gothic", Font.BOLD, 18));
 		btnStudent.setForeground(Color.WHITE);
-		btnStudent.setBounds(400, 1, 170, 100);
+		btnStudent.setBounds(540, 2, 170, 100);
 		btnStudent.setOpaque(false);
 		btnStudent.setContentAreaFilled(false);
 		btnStudent.setBorder(null);
@@ -129,7 +135,7 @@ public class MainWindow extends JFrame implements ActionListener{
 		btnFaculty.setFont(new Font("MS UI Gothic", Font.BOLD, 18));
 		btnFaculty.setContentAreaFilled(false);
 		btnFaculty.setBorder(null);
-		btnFaculty.setBounds(570, 1, 170, 100);
+		btnFaculty.setBounds(720, 1, 170, 100);
 		btnFaculty.addActionListener(this);
 		HeaderPanel.add(btnFaculty);
 		
@@ -139,19 +145,9 @@ public class MainWindow extends JFrame implements ActionListener{
 		btnCourse.setFont(new Font("MS UI Gothic", Font.BOLD, 18));
 		btnCourse.setContentAreaFilled(false);
 		btnCourse.setBorder(null);
-		btnCourse.setBounds(740, 1, 170, 100);
+		btnCourse.setBounds(900, 1, 170, 100);
 		btnCourse.addActionListener(this);
 		HeaderPanel.add(btnCourse);
-		
-		btnLibrary = new JButton("LIBRARY");
-		btnLibrary.setOpaque(false);
-		btnLibrary.setForeground(Color.WHITE);
-		btnLibrary.setFont(new Font("MS UI Gothic", Font.BOLD, 18));
-		btnLibrary.setContentAreaFilled(false);
-		btnLibrary.setBorder(null);
-		btnLibrary.setBounds(910, 1, 170, 100);
-		btnLibrary.addActionListener(this);
-		HeaderPanel.add(btnLibrary);
 		
 		btnAdmin = new JButton("ADMIN");
 		btnAdmin.setOpaque(false);
@@ -188,12 +184,7 @@ public class MainWindow extends JFrame implements ActionListener{
 		CoursePanel = new CoursePanel();
 		ContentCardPanel.add(CoursePanel, "Course Panel");
 		
-		LibraryPanel = new JPanel();
-		LibraryPanel.setBackground(new Color(255, 204, 102));
-		ContentCardPanel.add(LibraryPanel, "Library Panel");
-		
-		AdminPanel = new JPanel();
-		AdminPanel.setBackground(new Color(102, 0, 255));
+		AdminPanel = new AdminPanel();
 		ContentCardPanel.add(AdminPanel, "Admin Panel");
 		
 	}
@@ -211,13 +202,38 @@ public class MainWindow extends JFrame implements ActionListener{
 			CardLayout cl = (CardLayout)(ContentCardPanel.getLayout());
 		    cl.show(ContentCardPanel, "Course Panel");
 		}
-		else if (e.getSource() == btnLibrary) {
-			CardLayout cl = (CardLayout)(ContentCardPanel.getLayout());
-		    cl.show(ContentCardPanel, "Library Panel");
-		}
 		else if (e.getSource() == btnAdmin) {
 			CardLayout cl = (CardLayout)(ContentCardPanel.getLayout());
 		    cl.show(ContentCardPanel, "Admin Panel");
 		}
+		else if (e.getSource() == btnLogOut){
+			dispose();
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					try {
+						LoginWindow frame = new LoginWindow();
+						frame.setVisible(true);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+		}
 	} 
+
+	public static void setPassword(String p){
+		Password = p;
+	}
+
+	public static void setUsername(String u){
+		Username = u;
+	}
+
+	public static String getPassword(){
+		return Password;
+	}
+
+	public static String getUsername(){
+		return Username;
+	}
 }
