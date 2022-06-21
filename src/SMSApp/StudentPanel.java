@@ -67,7 +67,7 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 	private JButton btnSearch;
 	private JButton btnSearchById;
 	private JLabel lblNewLabel;
-	JScrollPane scrollPane;
+	private JScrollPane scrollPane;
 	private JTable table;
 	private JComboBox<String> cmbSearchOption;
 
@@ -952,6 +952,7 @@ public class StudentPanel extends JPanel implements ActionListener, ItemListener
 						(String)cmbStatus_AddPanel.getSelectedItem(),
 						txtEmail_AddPanel.getText(),
 						txtContact_AddPanel.getText()
+
 					};
 					if(Database.addStudent(info)){
 						JOptionPane.showMessageDialog(this, "STUDENT SUCCESSFULY ADDED", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);

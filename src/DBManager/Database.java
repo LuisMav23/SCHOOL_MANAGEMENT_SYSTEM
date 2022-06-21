@@ -9,8 +9,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 public class Database {
 	private static Connection ServerConnection = null;
 	
@@ -25,7 +23,6 @@ public class Database {
                     System.out.println(e.getMessage());
                 }  
                 ServerConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/School_Management_System",user,password);
-                // System.out.print("Connection Successful");
             } catch (SQLException e) {
                 e.printStackTrace();
             }  
