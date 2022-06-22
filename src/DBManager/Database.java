@@ -248,7 +248,7 @@ public class Database {
         }
     }
 
-    public static int getCourseHeadID(int id){
+    public static int getCourseHeadIDbyID(int id){
         try{
             Statement stm = ServerConnection.createStatement();
             String sqlstm = "SELECT DEPARTMENT_HEAD_ID FROM COURSE WHERE DEPARTMENT_ID = '" + id + "';";
@@ -483,7 +483,7 @@ public class Database {
            for (Object[] obj : facultyInfo){
                var generatedEmail = generateEmail((String)obj[1], (String)obj[2], (String)obj[3], (Integer)obj[0]);
                String email = "UPDATE FACULTY SET FACULTY_EMAIL = '" + generatedEmail + "' WHERE FACULTY_ID = " + (Integer)obj[0] + ";";
-               String HeadID = "UPDATE FACULTY SET SUPER_ID = " + getCourseHeadID((int)obj[5]) + " WHERE FACULTY_ID = " + (Integer)obj[0] + ";";
+               String HeadID = "UPDATE FACULTY SET SUPER_ID = " + getCourseHeadIDbyID((int)obj[5]) + " WHERE FACULTY_ID = " + (Integer)obj[0] + ";";
                stm.execute(email); 
                stm.execute(HeadID);  
            }

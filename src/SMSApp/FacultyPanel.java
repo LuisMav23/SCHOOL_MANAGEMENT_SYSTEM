@@ -507,7 +507,7 @@ public class FacultyPanel extends JPanel implements ActionListener, ItemListener
 		cmbDeptID_EditPanel = new JComboBox();
 		cmbDeptID_EditPanel.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		cmbDeptID_EditPanel.setBounds(345, 255, 195, 22);
-		cmbDeptID_EditPanel.addItem(this);
+		cmbDeptID_EditPanel.addItemListener(this);
 		EditPanel.add(cmbDeptID_EditPanel);
 		
 		JLabel lblDeptheadid_2 = new JLabel("SUPER_ID:");
@@ -788,11 +788,11 @@ public class FacultyPanel extends JPanel implements ActionListener, ItemListener
 		}
 
 		if (e.getSource() == cmbDeptID_AddPanel){
-			txtSuperID_AddPanel.setText(Integer.toString(Database.getCourseHeadID(Integer.parseInt((String)cmbDeptID_AddPanel.getSelectedItem()))));
+			txtSuperID_AddPanel.setText(Integer.toString(Database.getCourseHeadIDbyID(Integer.parseInt((String)cmbDeptID_AddPanel.getSelectedItem()))));
 		}
 
 		if (e.getSource() == cmbDeptID_EditPanel){
-			txtSuperID_EditPanel.setText(Integer.toString(Database.getCourseHeadID(Integer.parseInt((String)cmbDeptID_EditPanel.getSelectedItem()))));
+			txtSuperID_EditPanel.setText(Integer.toString(Database.getCourseHeadIDbyID(Integer.parseInt((String)cmbDeptID_EditPanel.getSelectedItem()))));
 		}
 		
 	}
