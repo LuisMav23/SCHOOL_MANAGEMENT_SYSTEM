@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 import java.awt.event.ActionEvent;
@@ -87,11 +88,12 @@ public class AdminPanel extends JPanel implements ActionListener {
 		lblCourseDatabase.setBounds(882, 72, 497, 75);
 		add(lblCourseDatabase);
 		
-		JLabel lblNewLabel_1 = new JLabel("LOGO");
+		JLabel lblNewLabel_1 = new JLabel();
+		lblNewLabel_1.setIcon(new ImageIcon("LOGO.png"));
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1.setForeground(Color.BLACK);
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 99));
-		lblNewLabel_1.setBounds(10, 10, 722, 643);
+		lblNewLabel_1.setBounds(10, 20, 722, 643);
 		add(lblNewLabel_1);
 	}
 

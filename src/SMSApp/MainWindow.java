@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
 
 import javax.swing.JFrame;
@@ -22,11 +23,12 @@ import javax.swing.SwingConstants;
 import javax.swing.border.MatteBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.ImageIcon;
 
 public class MainWindow extends JFrame implements ActionListener{
 
-	private static String Username;
-	private static String Password;
+	private static String Username = null;
+	private static String Password = null;
 
 	private JPanel contentPane;
 	private JPanel HeaderPanel;
@@ -40,7 +42,6 @@ public class MainWindow extends JFrame implements ActionListener{
 	private StudentPanel StudentPanel;
 	private JPanel FacultyPanel;
 	private JPanel CoursePanel;
-	private JPanel LibraryPanel;
 	private JPanel AdminPanel;
 
 	/**
@@ -117,7 +118,13 @@ public class MainWindow extends JFrame implements ActionListener{
 		btnStudent.addActionListener(this);
 		HeaderPanel.add(btnStudent);
 		
-		lblLogo = new JLabel("LOGO");
+		ImageIcon imageIcon = new ImageIcon("LOGO.png"); 
+		Image image = imageIcon.getImage(); 
+		Image newimg = image.getScaledInstance(100, 100,  java.awt.Image.SCALE_SMOOTH); 
+		imageIcon = new ImageIcon(newimg); 
+
+		lblLogo = new JLabel("");
+		lblLogo.setIcon(imageIcon);
 		lblLogo.setForeground(Color.WHITE);
 		lblLogo.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblLogo.setHorizontalAlignment(SwingConstants.CENTER);
@@ -169,6 +176,11 @@ public class MainWindow extends JFrame implements ActionListener{
 		btnLogOut.addActionListener(this);
 		HeaderPanel.add(btnLogOut);
 		
+		JLabel lblNewLabel = new JLabel("SCU Admin");
+		lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD, 70));
+		lblNewLabel.setForeground(Color.WHITE);
+		lblNewLabel.setBounds(133, 10, 366, 80);
+		HeaderPanel.add(lblNewLabel);
 		
 		ContentCardPanel = new JPanel();
 		ContentCardPanel.setBounds(0, 100, 1500, 663);
@@ -207,6 +219,8 @@ public class MainWindow extends JFrame implements ActionListener{
 		    cl.show(ContentCardPanel, "Admin Panel");
 		}
 		else if (e.getSource() == btnLogOut){
+			this.Username = null;
+			this.Password = null;
 			dispose();
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
