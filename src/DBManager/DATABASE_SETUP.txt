@@ -1,4 +1,4 @@
-DROP DATABASE School_Management_System;
+-- DROP DATABASE School_Management_System;
 
 CREATE DATABASE School_Management_System; -- CREATES THE DATABASE --
 
