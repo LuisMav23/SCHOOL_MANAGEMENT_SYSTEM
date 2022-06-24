@@ -115,24 +115,24 @@ public class Database {
 
 
     /* FINDS ALL THE ROWS IN A TABLE */
-    public static int getRowCount(String table) {
-        try{
-            Statement stm = ServerConnection.createStatement();
-            String sqlstm = "SELECT COUNT(*) FROM " + table + ";";
-            ResultSet rs = stm.executeQuery(sqlstm);
+    // public static int getRowCount(String table) {
+    //     try{
+    //         Statement stm = ServerConnection.createStatement();
+    //         String sqlstm = "SELECT COUNT(*) FROM " + table + ";";
+    //         ResultSet rs = stm.executeQuery(sqlstm);
 
-            if (rs.next()){
-                return rs.getInt(0);
-            }
-            else{
-                return 0;
-            }
-        }
-        catch (SQLException ex){
-            ex.printStackTrace();
-            return 0;
-        }
-    }
+    //         if (rs.next()){
+    //             return rs.getInt(0);
+    //         }
+    //         else{
+    //             return 0;
+    //         }
+    //     }
+    //     catch (SQLException ex){
+    //         ex.printStackTrace();
+    //         return 0;
+    //     }
+    // }
 
 /**************************************************** STUDENT ****************************************************/
 

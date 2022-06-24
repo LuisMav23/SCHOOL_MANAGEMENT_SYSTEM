@@ -833,7 +833,7 @@ public class FacultyPanel extends JPanel implements ActionListener, ItemListener
 				}
 				else {
 					JOptionPane.showMessageDialog(this, "FACULTY WITH ID :" + txtID_AddPanel.getText() + "\n ALREADY EXIST", "INVALID INFO", JOptionPane.ERROR_MESSAGE);
-				}
+				} 
 			}	
 		else {
 			JOptionPane.showMessageDialog(this, "FACULTY INFORMATION IS INVALID", "INVALID INFO", JOptionPane.ERROR_MESSAGE);
